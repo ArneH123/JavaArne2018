@@ -1,6 +1,8 @@
 package domein;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class BoB {
     
@@ -20,5 +22,11 @@ public class BoB {
     
     public ArrayList<Actie> GeefActies(){
         return acties;
+    }
+    
+    public ArrayList<Opdracht> GeefOpdrachtenShuffled(){
+       ArrayList<Opdracht> l =  opdrachten;
+       Collections.shuffle(l);
+       return l;
     }
 }
