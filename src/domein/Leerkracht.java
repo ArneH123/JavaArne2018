@@ -7,11 +7,13 @@ public class Leerkracht {
 	public String Naam;
 	private int Wachtwoord;
         private ArrayList<Oefening> oefeningen;
+        private ArrayList<BoB> boxes;
 
     public Leerkracht(String Naam, int Wachtwoord) {
         this.Naam = Naam;
         this.Wachtwoord = Wachtwoord;
         oefeningen = new ArrayList<Oefening>();
+        boxes = new ArrayList<BoB>();
     }
         
         
