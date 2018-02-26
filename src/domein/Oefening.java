@@ -5,7 +5,7 @@ import javax.persistence.Id;
 
 public class Oefening {
     @Id
-    private int Id;
+    private int id;
     private String opgave;
     private double antwoord;
     private Boolean feedback;

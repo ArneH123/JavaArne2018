@@ -3,10 +3,13 @@ package domein;
 
 public class Opdracht {
 
-    Oefening oefening;
-    Actie actie;
-    Toegangscode toegangscode;
+    Oefening attribute;
+    Actie attribute2;
+    Toegangscode attribute3;
     final int nummerOpdracht;
+	Oefening oefening;
+	Actie actie;
+	Toegangscode toegangscode;
 
     public Opdracht(Oefening oefening, Actie actie, Toegangscode toegangscode, int nummerOpdracht)
     {
@@ -16,40 +19,64 @@ public class Opdracht {
         this.nummerOpdracht = nummerOpdracht;
     }
 
-    public Oefening getOefening()
+    public Oefening getAttribute()
     {
-        return oefening;
+        return attribute;
     }
 
-    public void setOefening(Oefening oefening)
+    public void setAttribute(Oefening oefening)
     {
-        this.oefening = oefening;
+        this.attribute = oefening;
     }
 
-    public Actie getActie()
+    public Actie getAttribute2()
     {
-        return actie;
+        return attribute2;
     }
 
-    public void setActie(Actie actie)
+    public void setAttribute2(Actie actie)
     {
-        this.actie = actie;
+        this.attribute2 = actie;
     }
 
-    public Toegangscode getToegangscode()
+    public Toegangscode getAttribute3()
     {
-        return toegangscode;
+        return attribute3;
     }
 
-    public void setToegangscode(Toegangscode toegangscode)
+    public void setAttribute3(Toegangscode toegangscode)
     {
-        this.toegangscode = toegangscode;
+        this.attribute3 = toegangscode;
     }
 
     public int getNummerOpdracht()
     {
         return nummerOpdracht;
     }
+
+	public Oefening getOefening() {
+		return this.oefening;
+	}
+
+	public void setOefening(Oefening oefening) {
+		this.oefening = oefening;
+	}
+
+	public Actie getActie() {
+		return this.actie;
+	}
+
+	public void setActie(Actie actie) {
+		this.actie = actie;
+	}
+
+	public Toegangscode getToegangscode() {
+		return this.toegangscode;
+	}
+
+	public void setToegangscode(Toegangscode toegangscode) {
+		this.toegangscode = toegangscode;
+	}
     
     
 }
