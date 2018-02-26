@@ -3,9 +3,6 @@ package domein;
 
 public class Opdracht {
 
-    Oefening attribute;
-    Actie attribute2;
-    Toegangscode attribute3;
     final int nummerOpdracht;
 	Oefening oefening;
 	Actie actie;
@@ -17,36 +14,6 @@ public class Opdracht {
         this.actie = actie;
         this.toegangscode = toegangscode;
         this.nummerOpdracht = nummerOpdracht;
-    }
-
-    public Oefening getAttribute()
-    {
-        return attribute;
-    }
-
-    public void setAttribute(Oefening oefening)
-    {
-        this.attribute = oefening;
-    }
-
-    public Actie getAttribute2()
-    {
-        return attribute2;
-    }
-
-    public void setAttribute2(Actie actie)
-    {
-        this.attribute2 = actie;
-    }
-
-    public Toegangscode getAttribute3()
-    {
-        return attribute3;
-    }
-
-    public void setAttribute3(Toegangscode toegangscode)
-    {
-        this.attribute3 = toegangscode;
     }
 
     public int getNummerOpdracht()
