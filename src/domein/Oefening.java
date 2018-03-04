@@ -1,6 +1,7 @@
 package domein;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Id;
 
 public class Oefening {
@@ -10,9 +11,9 @@ public class Oefening {
     private String opgave;
     private double antwoord;
     private Boolean feedback;
-    private ArrayList<Groepsbewerkingen> groepsbewerkingen;
+    private List<Groepsbewerking> groepsbewerkingen;
 
-    public Oefening(String opgave, double antwoord, ArrayList<Groepsbewerkingen> groepsbewerkingen) {
+    public Oefening(String opgave, double antwoord, ArrayList<Groepsbewerking> groepsbewerkingen) {
         this.opgave = opgave;
         this.antwoord = antwoord;
         this.groepsbewerkingen = groepsbewerkingen;
@@ -30,7 +31,7 @@ public class Oefening {
         return feedback;
     }
 
-    public ArrayList<Groepsbewerkingen> getGroepsbewerkingen() {
+    public List<Groepsbewerking> getGroepsbewerking() {
         return groepsbewerkingen;
     }
 
@@ -46,13 +47,11 @@ public class Oefening {
         this.feedback = feedback;
     }
 
-    public void setGroepsbewerkingen(ArrayList<Groepsbewerkingen> groepsbewerkingen) {
+    public void setGroepsbewerking(List<Groepsbewerking> groepsbewerkingen) {
         this.groepsbewerkingen = groepsbewerkingen;
     }
-
-    void setAntwoord(String antwoord) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public String toonOverzicht() {
+        return null;
     }
-    
-    
 }

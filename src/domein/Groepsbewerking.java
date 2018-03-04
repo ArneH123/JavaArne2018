@@ -9,6 +9,6 @@ package domein;
  *
  * @author Arne
  */
-public class Groepsbewerkingen {
+public class Groepsbewerking {
     
 }

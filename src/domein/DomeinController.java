@@ -4,13 +4,13 @@ import java.util.List;
 
 public class DomeinController {
 
-	private OpdrachtRepository opdrachtRepos;
+	private OefeningBeheerder oefeningBeheerder;
 
 	public DomeinController() {
 		
 	}
 
-	public List<Opdracht> geefOpdrachten() {
+	public List<Oefening> geefOefeningen() {
 		// TODO - implement DomeinController.geefOpdrachten
 		throw new UnsupportedOperationException();
 	}
