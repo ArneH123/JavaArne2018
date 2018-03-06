@@ -7,6 +7,7 @@ package persistentie;
 
 import domein.Oefening;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -29,12 +30,29 @@ public class DataInitializer {
     
     public static void initializeOefeningen(){
         List<Oefening> oefeningen = new ArrayList();
-        Oefening o1 = new Oefening("Oefening 1");
-        Oefening o2 = new Oefening("Oefening 2");
-        Oefening o3 = new Oefening("Oefening 3");
+        Oefening o1 = new Oefening("Oefening wortels");
+        Oefening o2 = new Oefening("Oefening breuken");
+        Oefening o3 = new Oefening("Oefening vermenigvuldigen");
+        Oefening o4 = new Oefening("Oefening integralen");
+        Oefening o5 = new Oefening("Oefening machten");
+        Oefening o6 = new Oefening("Oefening pythagoras");
+        Oefening o7 = new Oefening("Oefening sinus");
+        Oefening o8 = new Oefening("Oefening cosinus");
+        Oefening o9 = new Oefening("Oefening tangens");
+        Oefening o10 = new Oefening("Oefening combinatoriek");
+        Oefening o11 = new Oefening("Oefening statistiek");
+        
         oefeningen.add(o1);
-        oefeningen.add(o3);
         oefeningen.add(o2);
+        oefeningen.add(o3);
+        oefeningen.add(o4);
+        oefeningen.add(o5);
+        oefeningen.add(o6);
+        oefeningen.add(o7);
+        oefeningen.add(o8);
+        oefeningen.add(o9);
+        oefeningen.add(o10);
+        oefeningen.add(o11);      
         
         for(Oefening o : oefeningen){
             em.persist(o);

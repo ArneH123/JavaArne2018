@@ -8,6 +8,7 @@ package gui;
 import domein.Oefening;
 import domein.OefeningBeheerder;
 import java.io.IOException;
+import java.util.Collections;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,18 +62,7 @@ public class OefeningenSchermController extends AnchorPane {
         for(Oefening o : data){
             names.add(o.getNaam());
         }
-        names.add("Oefening 1");
-//        names.add("Oefening 2");
-//        names.add("Oefening 3");
-//        names.add("Oefening 4");
-//        names.add("Oefening 5");
-//        names.add("Oefening 6");
-//        names.add("Oefening 7");
-//        names.add("Oefening 8");
-//        names.add("Oefening 9");
-//        names.add("Oefening 10");
-//        names.add("Oefening 11");
-//        names.add("Oefening 12");
+        Collections.sort(names);
         oefeningenView.setItems(names);
     }
 }
