@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root id="AnchorPane" prefHeight="800.0" prefWidth="1000.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="818.0" prefWidth="1108.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.OefeningenSchermController">
    <children>
-      <VBox alignment="CENTER" layoutY="7.0" prefHeight="800.0" prefWidth="500.0">
+      <VBox alignment="CENTER" layoutX="-17.0" layoutY="4.0" prefHeight="800.0" prefWidth="500.0">
          <children>
             <Label alignment="CENTER" prefHeight="45.0" prefWidth="193.0" text="Oefeningen">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <ListView fx:id="oefeningenView" prefHeight="648.0" prefWidth="500.0" />
+            <ListView fx:id="oefeningenView" prefHeight="648.0" prefWidth="464.0">
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin></ListView>
             <Button fx:id="btnDetail" mnemonicParsing="false" onAction="#detailCurrent" prefHeight="55.0" prefWidth="187.0" text="Open details current">
                <VBox.margin>
                   <Insets top="15.0" />
@@ -32,29 +37,90 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="563.0" layoutY="91.0" text="Naam">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="543.0" layoutY="159.0" text="Opgave">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="519.0" layoutY="407.0" text="Antwoord">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <TextField fx:id="naamField" editable="false" layoutX="635.0" layoutY="95.0" prefHeight="27.0" prefWidth="304.0" />
-      <TextArea fx:id="opgaveField" editable="false" layoutX="635.0" layoutY="166.0" prefHeight="200.0" prefWidth="304.0" />
-      <TextArea fx:id="antwoordField" editable="false" layoutX="635.0" layoutY="407.0" prefHeight="122.0" prefWidth="304.0" />
-      <Label layoutX="573.0" layoutY="569.0" text="Hint">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <TextArea fx:id="hintField" editable="false" layoutX="635.0" layoutY="569.0" prefHeight="122.0" prefWidth="304.0" />
+      <VBox layoutX="506.0" prefHeight="809.0" prefWidth="517.0">
+         <children>
+            <GridPane prefHeight="809.0" prefWidth="461.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="232.20635986328125" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.888916015625" minWidth="10.0" prefWidth="274.79364013671875" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="394.1272888183594" minHeight="10.0" prefHeight="394.1272888183594" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="319.0" minHeight="10.0" prefHeight="10.872711181640625" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="223.41912841796875" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="269.0" minHeight="10.0" prefHeight="120.6031494140625" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Naam" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <TextField fx:id="naamField" editable="false" prefHeight="27.0" prefWidth="327.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <Label text="Opgave" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <TextArea fx:id="opgaveField" editable="false" prefHeight="95.0" prefWidth="248.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </TextArea>
+                  <Label text="Antwoord" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <TextArea fx:id="antwoordField" editable="false" prefHeight="122.0" prefWidth="304.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </TextArea>
+                  <Label text="Hint" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <TextArea fx:id="hintField" editable="false" prefHeight="72.0" prefWidth="258.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </TextArea>
+                  <Label fx:id="txtGroepsBewerking" text="Groepsbewerking" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <ListView fx:id="lstGroepsBewerkingen" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </ListView>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
    </children>
-</fx:root>
+</AnchorPane>

@@ -8,13 +8,10 @@ package gui;
 import domein.Oefening;
 import domein.OefeningBeheerder;
 import java.io.IOException;
-import java.util.Collections;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -22,7 +19,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -31,8 +27,6 @@ import javafx.stage.Stage;
  */
 public class OefeningenSchermController extends AnchorPane {
 
-    @FXML
-    private AnchorPane AnchorPane;
 
     @FXML
     ListView<Oefening> oefeningenView;
@@ -50,6 +44,10 @@ public class OefeningenSchermController extends AnchorPane {
     private TextArea hintField;
 
     private OefeningBeheerder ob;
+    @FXML
+    private Label txtGroepsBewerking;
+    @FXML
+    private ListView<?> lstGroepsBewerkingen;
 
     public OefeningenSchermController(OefeningBeheerder ob) {
 
@@ -85,11 +83,6 @@ public class OefeningenSchermController extends AnchorPane {
 
     private void buildGui() {
         ObservableList<Oefening> data = ob.geefOefeningenAsLijst();
-        ObservableList<String> names = FXCollections.observableArrayList();
-        for (Oefening o : data) {
-            names.add(o.getNaam());
-        }
-        Collections.sort(names);
         oefeningenView.setItems(data);
         oefeningenView.setCellFactory(param -> new ListCell<Oefening>() {
             @Override

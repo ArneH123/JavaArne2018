@@ -50,15 +50,9 @@ public class Oefening {
         return id;
     }
     
-    
-
-    
     public String getNaam() {
         return naam;
     }
-    
-    
-
     
     public String getOpgave() {
         return opgave;
