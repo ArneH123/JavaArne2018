@@ -13,11 +13,14 @@ public class StartUp extends Application
            
     @Override
    public void start(Stage primaryStage){
+       
       OefeningenSchermController root = new OefeningenSchermController(ob);
       Scene scene = new Scene(root);
       
       primaryStage.setScene(scene);
       primaryStage.show();
+
+
    }
     
     public static void main(String[] args) {

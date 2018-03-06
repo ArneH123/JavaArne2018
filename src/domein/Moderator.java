@@ -42,7 +42,7 @@ public class Moderator {
             oefeningen.get(id).setAntwoord(antwoord);
 	}
 
-	public void wijzigFeedback(int id, Boolean feedback) {
+	public void wijzigFeedback(int id, String feedback) {
             oefeningen.get(id).setFeedback(feedback);
 	}
 

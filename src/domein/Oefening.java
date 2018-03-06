@@ -19,7 +19,7 @@ public class Oefening {
     private String naam;
     private String opgave;
     private String antwoord;
-    private Boolean feedback;
+    private String feedback;
 //    @OneToMany(mappedBy="Groepsbewerking", cascade = CascadeType.PERSIST)
     private List<Groepsbewerking> groepsbewerkingen;
 
@@ -33,6 +33,15 @@ public class Oefening {
     public Oefening(String naam) {
         this.naam = naam;
     }
+
+    public Oefening(String naam, String opgave, String antwoord, String feedback) {
+        this.naam = naam;
+        this.opgave = opgave;
+        this.antwoord = antwoord;
+        this.feedback = feedback;
+    }
+    
+    
 
     public Oefening() {
     }
@@ -59,7 +68,7 @@ public class Oefening {
         return antwoord;
     }
 
-    public Boolean getFeedback() {
+    public String getFeedback() {
         return feedback;
     }
 
@@ -75,7 +84,7 @@ public class Oefening {
         this.antwoord = antwoord;
     }
 
-    public void setFeedback(Boolean feedback) {
+    public void setFeedback(String feedback) {
         this.feedback = feedback;
     }
 

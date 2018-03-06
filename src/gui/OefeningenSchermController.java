@@ -45,6 +45,9 @@ public class OefeningenSchermController extends AnchorPane {
     
     @FXML
     private TextArea antwoordField;
+    
+    @FXML
+    private TextArea hintField;
 
     private OefeningBeheerder ob;
 
@@ -74,11 +77,10 @@ public class OefeningenSchermController extends AnchorPane {
 //        stage1.setScene(scene1);
 //        stage1.show();
           Oefening current = ob.geefOefeningMetId(oefeningenView.getSelectionModel().getSelectedItem().getId());
-          System.out.println(current.getNaam());
           naamField.setText(current.getNaam());
           opgaveField.setText(current.getOpgave());
           antwoordField.setText(current.getAntwoord());
-           
+          hintField.setText(current.getFeedback());
     }
 
     private void buildGui() {
