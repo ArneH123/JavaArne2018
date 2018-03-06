@@ -14,16 +14,16 @@ import javax.persistence.Table;
 public class Oefening {
     @Id
     @GeneratedValue
-    private int Id;
+    private int id;
     
     private String naam;
     private String opgave;
-    private double antwoord;
+    private String antwoord;
     private Boolean feedback;
 //    @OneToMany(mappedBy="Groepsbewerking", cascade = CascadeType.PERSIST)
     private List<Groepsbewerking> groepsbewerkingen;
 
-    public Oefening(String naam,String opgave, double antwoord, ArrayList<Groepsbewerking> groepsbewerkingen) {
+    public Oefening(String naam,String opgave, String antwoord, ArrayList<Groepsbewerking> groepsbewerkingen) {
         this.naam = naam;
         this.opgave = opgave;
         this.antwoord = antwoord;
@@ -36,9 +36,14 @@ public class Oefening {
 
     public Oefening() {
     }
+
+    public int getId() {
+        return id;
+    }
     
     
 
+    
     public String getNaam() {
         return naam;
     }
@@ -50,7 +55,7 @@ public class Oefening {
         return opgave;
     }
 
-    public double getAntwoord() {
+    public String getAntwoord() {
         return antwoord;
     }
 
@@ -66,7 +71,7 @@ public class Oefening {
         this.opgave = opgave;
     }
 
-    public void setAntwoord(double antwoord) {
+    public void setAntwoord(String antwoord) {
         this.antwoord = antwoord;
     }
 

@@ -17,4 +17,8 @@ public class PersistentieController {
         return FXCollections.observableArrayList(oefeningMapper.findAll());
     }
     
+    public Oefening geefOefeningMetId(int id){
+        return oefeningMapper.findById(id);
+    }
+    
 }

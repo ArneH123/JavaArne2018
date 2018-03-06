@@ -5,23 +5,50 @@
  */
 package gui;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
+import domein.Oefening;
+import domein.OefeningBeheerder;
+import java.io.IOException;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
  *
- * @author ruben
+ * @author Arne
  */
-public class OefeningDetailSchermController implements Initializable {
+public class OefeningDetailSchermController extends AnchorPane { 
+    @FXML
+    private AnchorPane AnchorPane;
+    
+    private OefeningBeheerder ob;
+    private int oefeningId;
+    private Oefening currentOefening;
+       
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+    public OefeningDetailSchermController(OefeningBeheerder ob, int oefeningId) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("OefeningDetailScherm.fxml"));
+        loader.setRoot(this);
+        loader.setController(this);
+
+        try {
+            loader.load();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        this.ob = ob;
+        this.oefeningId = oefeningId;
+        buildGui();
+        
+    }
+
+    @FXML
+    private Label oefeningNaam;
+            
+    private void buildGui() {
+        oefeningNaam.setText(ob.geefOefeningenAsLijst().get(oefeningId).getNaam());
+    }
+    
     
 }

@@ -17,5 +17,9 @@ public class OefeningBeheerder {
         return pc.geefOefeningenAsLijst();
     }
     
+    public Oefening geefOefeningMetId(int id){
+        return pc.geefOefeningMetId(id);
+    }
+    
         
 }

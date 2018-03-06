@@ -38,7 +38,7 @@ public class Moderator {
             oefeningen.get(id).setOpgave(opgave);
 	}
 
-	public void wijzigAntwoord(int id, double antwoord) {
+	public void wijzigAntwoord(int id, String antwoord) {
             oefeningen.get(id).setAntwoord(antwoord);
 	}
 

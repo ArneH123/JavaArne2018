@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -10,18 +11,44 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<fx:root id="AnchorPane" prefHeight="300.0" prefWidth="450.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root id="AnchorPane" prefHeight="800.0" prefWidth="1000.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER" prefHeight="300.0" prefWidth="450.0">
+      <VBox alignment="CENTER" layoutY="7.0" prefHeight="800.0" prefWidth="500.0">
          <children>
             <Label alignment="CENTER" prefHeight="45.0" prefWidth="193.0" text="Oefeningen">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <ListView fx:id="oefeningenView" prefHeight="226.0" prefWidth="293.0" />
-            <Button fx:id="btnDetail" mnemonicParsing="false" onAction="#detailCurrent" prefHeight="55.0" prefWidth="187.0" text="Open details current" />
+            <ListView fx:id="oefeningenView" prefHeight="648.0" prefWidth="500.0" />
+            <Button fx:id="btnDetail" mnemonicParsing="false" onAction="#detailCurrent" prefHeight="55.0" prefWidth="187.0" text="Open details current">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></Button>
          </children>
       </VBox>
+      <Label layoutX="723.0" layoutY="34.0" text="Details">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="562.0" layoutY="142.0" text="Naam">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="543.0" layoutY="235.0" text="Opgave">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="520.0" layoutY="473.0" text="Antwoord">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="naamField" layoutX="649.0" layoutY="145.0" prefHeight="27.0" prefWidth="304.0" />
+      <TextArea fx:id="opgaveField" layoutX="649.0" layoutY="235.0" prefHeight="200.0" prefWidth="304.0" />
+      <TextArea fx:id="antwoordField" layoutX="649.0" layoutY="473.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </fx:root>
