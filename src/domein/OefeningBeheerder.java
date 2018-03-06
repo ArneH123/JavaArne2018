@@ -1,12 +1,21 @@
 package domein;
 
+import java.util.ArrayList;
+import java.util.List;
+import javafx.collections.ObservableList;
+import persistentie.OefeningMapper;
+
 public class OefeningBeheerder {
+    private OefeningMapper oefeningMapper;
+    
+    
 
-	private Oefening oefeningen;
+    public OefeningBeheerder() {
+        oefeningMapper = new OefeningMapper();
+    }
 
-	public OefeningBeheerder() {
-		// TODO - implement OefeningBeheerder.OefeningBeheerder
-		throw new UnsupportedOperationException();
-	}
+    public ObservableList<Oefening> geefOefeningen() {
+        return oefeningMapper.geefOefeningen();
+    }
 
 }

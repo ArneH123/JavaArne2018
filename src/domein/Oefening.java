@@ -7,18 +7,30 @@ import javax.persistence.Id;
 public class Oefening {
     @Id
     private int Id;
-    private int naam;
+    private String naam;
     private String opgave;
     private double antwoord;
     private Boolean feedback;
     private List<Groepsbewerking> groepsbewerkingen;
 
-    public Oefening(String opgave, double antwoord, ArrayList<Groepsbewerking> groepsbewerkingen) {
+    public Oefening(String naam,String opgave, double antwoord, ArrayList<Groepsbewerking> groepsbewerkingen) {
+        this.naam = naam;
         this.opgave = opgave;
         this.antwoord = antwoord;
         this.groepsbewerkingen = groepsbewerkingen;
     }
 
+    public Oefening(String naam) {
+        this.naam = naam;
+    }
+
+    public String getNaam() {
+        return naam;
+    }
+    
+    
+
+    
     public String getOpgave() {
         return opgave;
     }

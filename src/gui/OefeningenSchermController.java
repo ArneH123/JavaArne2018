@@ -5,57 +5,74 @@
  */
 package gui;
 
+import domein.Oefening;
+import domein.OefeningBeheerder;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
  *
- * @author ruben
+ * @author Arne
  */
-public class OefeningenSchermController implements Initializable {
+public class OefeningenSchermController extends AnchorPane {
+
+    @FXML
+    private AnchorPane AnchorPane;
+    
+    @FXML
+    ListView<String> oefeningenView;
+    
+//    private OefeningBeheerder ob;
 
     public OefeningenSchermController() {
-        
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("HoofdMenu.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("OefeningenScherm.fxml"));
         loader.setRoot(this);
         loader.setController(this);
-        
 
         try {
             loader.load();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+//        this.ob = new OefeningBeheerder();
+        buildGui();
     }
-    
-    
 
     @FXML
-    private Button btnToevoegen;
+    private Button btnDetail;
+
     @FXML
-    private Button btnAanpassen;
-    
-    @FXML
-    private void oefeningToevoegen (ActionEvent event) {
+    private void detailCurrent(ActionEvent event) {
         
     }
-    
-    @FXML
-    private void oefeningAanpassen (ActionEvent event) {
-        
+
+    private void buildGui() {
+//        ObservableList<Oefening> data = ob.geefOefeningen();
+        ObservableList<String> names = FXCollections.observableArrayList();
+//        for(Oefening o : ob.geefOefeningen()){
+//            names.add(o.getNaam());
+//        }
+        names.add("Oefening 1");
+        names.add("Oefening 2");
+        names.add("Oefening 3");
+        names.add("Oefening 4");
+        names.add("Oefening 5");
+        names.add("Oefening 6");
+        names.add("Oefening 7");
+        names.add("Oefening 8");
+        names.add("Oefening 9");
+        names.add("Oefening 10");
+        names.add("Oefening 11");
+        names.add("Oefening 12");
+        oefeningenView.setItems(names);
     }
-    
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
 }
