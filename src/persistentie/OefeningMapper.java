@@ -6,8 +6,11 @@
 package persistentie;
 
 import domein.Oefening;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javax.persistence.Query;
+import static persistentie.DataInitializer.em;
 
 /**
  *
@@ -18,7 +21,6 @@ public class OefeningMapper {
     ObservableList<Oefening> oefeningen;
 
     public OefeningMapper() {
-        maakOefeningen();
     }
 
     public ObservableList<Oefening> geefOefeningen() {
@@ -27,12 +29,8 @@ public class OefeningMapper {
         return oefeningenfx;
     }
     
-    public void maakOefeningen(){
-        Oefening o1 = new Oefening("Oefening 1");
-        Oefening o2 = new Oefening("Oefening 2");
-        Oefening o3 = new Oefening("Oefening 3");
-        oefeningen.add(o1);
-        oefeningen.add(o3);
-        oefeningen.add(o2);
+    public List<Oefening> findAll(){
+        Query queryAll = em.createQuery("SELECT o FROM Oefening o", Oefening.class);
+        return (List<Oefening>) queryAll.getResultList();
     }
 }

@@ -2,15 +2,25 @@ package domein;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Oefening")
 public class Oefening {
     @Id
+    @GeneratedValue
     private int Id;
+    
     private String naam;
     private String opgave;
     private double antwoord;
     private Boolean feedback;
+//    @OneToMany(mappedBy="Groepsbewerking", cascade = CascadeType.PERSIST)
     private List<Groepsbewerking> groepsbewerkingen;
 
     public Oefening(String naam,String opgave, double antwoord, ArrayList<Groepsbewerking> groepsbewerkingen) {
@@ -23,6 +33,11 @@ public class Oefening {
     public Oefening(String naam) {
         this.naam = naam;
     }
+
+    public Oefening() {
+    }
+    
+    
 
     public String getNaam() {
         return naam;

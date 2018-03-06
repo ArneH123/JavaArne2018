@@ -30,9 +30,9 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     ListView<String> oefeningenView;
     
-//    private OefeningBeheerder ob;
+    private OefeningBeheerder ob;
 
-    public OefeningenSchermController() {
+    public OefeningenSchermController(OefeningBeheerder ob) {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("OefeningenScherm.fxml"));
         loader.setRoot(this);
@@ -43,7 +43,7 @@ public class OefeningenSchermController extends AnchorPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-//        this.ob = new OefeningBeheerder();
+        this.ob = ob;
         buildGui();
     }
 
@@ -56,23 +56,23 @@ public class OefeningenSchermController extends AnchorPane {
     }
 
     private void buildGui() {
-//        ObservableList<Oefening> data = ob.geefOefeningen();
+        ObservableList<Oefening> data = ob.geefOefeningenAsLijst();
         ObservableList<String> names = FXCollections.observableArrayList();
-//        for(Oefening o : ob.geefOefeningen()){
-//            names.add(o.getNaam());
-//        }
+        for(Oefening o : data){
+            names.add(o.getNaam());
+        }
         names.add("Oefening 1");
-        names.add("Oefening 2");
-        names.add("Oefening 3");
-        names.add("Oefening 4");
-        names.add("Oefening 5");
-        names.add("Oefening 6");
-        names.add("Oefening 7");
-        names.add("Oefening 8");
-        names.add("Oefening 9");
-        names.add("Oefening 10");
-        names.add("Oefening 11");
-        names.add("Oefening 12");
+//        names.add("Oefening 2");
+//        names.add("Oefening 3");
+//        names.add("Oefening 4");
+//        names.add("Oefening 5");
+//        names.add("Oefening 6");
+//        names.add("Oefening 7");
+//        names.add("Oefening 8");
+//        names.add("Oefening 9");
+//        names.add("Oefening 10");
+//        names.add("Oefening 11");
+//        names.add("Oefening 12");
         oefeningenView.setItems(names);
     }
 }
