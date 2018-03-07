@@ -9,7 +9,6 @@ public class PersistentieController {
 
     public PersistentieController() {
         oefeningMapper = new OefeningMapper();
-        
         DataInitializer.run();
     }
 

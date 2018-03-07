@@ -18,14 +18,39 @@ import javax.persistence.Persistence;
  * @author Arne
  */
 public class DataInitializer {
-    static EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("P2G11PU");
-    static EntityManager em = emfactory.createEntityManager();
+    static EntityManagerFactory emfactory;
+    static EntityManager em;
+    static final String EntityName = "P2G11PU";
     
     public static void run(){
-        em.getTransaction().begin();
-        initializeOefeningen();
-        em.getTransaction().commit();
-        
+        try
+        {
+            emfactory = Persistence.createEntityManagerFactory(EntityName);
+            em = emfactory.createEntityManager();
+
+            em.getTransaction().begin();
+            initializeOefeningen();
+            em.getTransaction().commit();
+        }
+        catch (Exception e)
+        {
+            dataBaseFout();
+        }
+    }
+    
+    public static void dataBaseFout()
+    {
+        System.err.println("!!!");
+        System.err.println("Database initialisatie fout !");
+        System.err.println("Controleer volgende zaken:");
+        System.err.println("-1- Services > Databases > JavaDB > right click 'Start Server'");
+        System.err.println("-2- Services > Databases > jdbc:deby... > right click 'connect'");
+        System.err.println("-3- Projects > META-INF > persistence.xml");
+        System.err.println("  Kijk of de naam "+EntityName+" gekoppeld is aan de database van -2-");
+        System.err.println("---");
+        System.err.println("Het programma wordt nu gestopt. Gelieve de fout eerst te verhelpen");
+        System.err.println("!!!");
+        System.exit(0);
     }
     
     public static void initializeOefeningen(){
@@ -54,8 +79,15 @@ public class DataInitializer {
         oefeningen.add(o10);
         oefeningen.add(o11);      
         
-        for(Oefening o : oefeningen){
-            em.persist(o);
+        try
+        {
+            for(Oefening o : oefeningen){
+                em.persist(o);
+            }
         }
+        catch (Exception e)
+        {
+            dataBaseFout();
+        }        
     }
 }
