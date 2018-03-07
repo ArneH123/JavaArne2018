@@ -10,6 +10,7 @@ import domein.OefeningBeheerder;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -36,6 +38,7 @@ import javafx.scene.paint.Color;
  */
 public class OefeningenSchermController extends AnchorPane {
     private OefeningBeheerder ob;
+    private FilteredList<Oefening> filteredList = null;
     
     private enum bewerkStatus {
         AANPASBAAR, AANGEPAST, NIETAANPASBAAR, GEENSELECTIE
@@ -103,8 +106,13 @@ public class OefeningenSchermController extends AnchorPane {
                     put(bewerkStatus.NIETAANPASBAAR,"U kan deze oefening niet wijzigen! \n Deze oefening is gekoppeld aan een BoB die in een openstaande of actieve sessie zit.");
                     put(bewerkStatus.GEENSELECTIE,"(geen oefening geselecteerd)");
     }};
-    
+
     private void updateEditeerModus(bewerkStatus status)
+    {
+        updateEditeerModus(status,true);
+    }
+    
+    private void updateEditeerModus(bewerkStatus status, boolean updateAlleStijlen)
     {
         // later aan te vullen door achtergroundkleur ? (of toch gewoon setDisable gebruiken (lelkijk))
         // Background achter = new Background(new BackgroundFill(Color.GREY, new CornerRadii(10), null));
@@ -115,11 +123,14 @@ public class OefeningenSchermController extends AnchorPane {
         lblInfo.setStyle(stijl + " -fx-text-fill: #"+kleuren.get(status) +";");
         lblInfo.setText(uitleg.get(status));
         
-        naamField.setStyle(stijl);
-        opgaveField.setStyle(stijl);
-        antwoordField.setStyle(stijl);
-        hintField.setStyle(stijl);
-        lstGroepsBewerkingen.setStyle(stijl);
+        if (updateAlleStijlen)
+        {
+            naamField.setStyle(stijl);
+            opgaveField.setStyle(stijl);
+            antwoordField.setStyle(stijl);
+            hintField.setStyle(stijl);
+            lstGroepsBewerkingen.setStyle(stijl);
+        } 
         btnOpslaan.setStyle(stijl);
         
         boolean aanpasBaar = (status==bewerkStatus.AANPASBAAR || status==bewerkStatus.AANGEPAST);
@@ -159,13 +170,25 @@ public class OefeningenSchermController extends AnchorPane {
         Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
         if (selected==null)
             return;
+
         ob.wisOefening(selected);
         laadOefeningenLijst();
     }
 
     @FXML
     private void opslaanWijzigingen(ActionEvent event) {
-          laadOefeningDetail();
+        
+        Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
+        if (selected==null)
+            return;
+
+        selected.setNaam(naamField.getText());
+        selected.setOpgave(opgaveField.getText());
+        selected.setAntwoord(antwoordField.getText());
+        selected.setFeedback(hintField.getText());
+        
+        ob.slaOefeningOp(selected);
+        laadOefeningenLijst(true);
     }
     
     private void laadOefeningDetail() 
@@ -201,16 +224,31 @@ public class OefeningenSchermController extends AnchorPane {
         updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
         
     }
+
     private void laadOefeningenLijst()
     {
-        filteredList = new FilteredList<>(ob.geefOefeningenAsLijst());
-        oefeningenView.setItems(filteredList);
+        laadOefeningenLijst(false);
     }
     
-    private FilteredList<Oefening> filteredList;
+    private void laadOefeningenLijst(boolean forceerRefresh)
+    {
+        filteredList = new FilteredList<>(ob.geefOefeningenAsLijst());
+        int selectedIndex = oefeningenView.getSelectionModel().getSelectedIndex();
+        
+        
+        if (forceerRefresh) // bij data update van setItems wordt er geen cache invalidate gedaan bij een gelijk aaltal items (dus de save funtie)
+            oefeningenView.setItems(null); // Als er beter manieren zijn om een listview te refreshen graag
+        
+        oefeningenView.setItems(filteredList);
+
+        if (forceerRefresh) 
+            oefeningenView.getSelectionModel().select( selectedIndex);
+
+    }
+    
     private void buildGui() {
         
-        // Debug
+        // Debug - to be removed avhteraf
         if (ob==null)
             System.out.print("OB niet correct ingeladen");
         if (oefeningenView==null)
@@ -242,8 +280,31 @@ public class OefeningenSchermController extends AnchorPane {
                 return data.getNaam().toLowerCase().contains(newValue.toLowerCase());
                 });
         });
-
+        
+        naamField.textProperty().addListener(new OefeningDetailsGewijzigd(naamField));
+        opgaveField.textProperty().addListener(new OefeningDetailsGewijzigd(opgaveField));
+        antwoordField.textProperty().addListener(new OefeningDetailsGewijzigd(antwoordField));
+        hintField.textProperty().addListener(new OefeningDetailsGewijzigd(hintField));
+            
         laadOefeningenLijst();
         laadOefeningDetail(); // Trigger de geen selectie procedure
     }
+    
+    public class OefeningDetailsGewijzigd implements ChangeListener
+   {
+        private Control source;
+        public OefeningDetailsGewijzigd(Control source) {
+            this.source = source;
+            System.out.println(source.toString());
+        }
+
+        @Override
+        public void changed(ObservableValue observable, Object oldValue, Object newValue) 
+        {
+            String stijl = "-fx-border-color: #"+kleuren.get(bewerkStatus.AANGEPAST) +";"; 
+            source.setStyle(stijl);
+            updateEditeerModus(bewerkStatus.AANGEPAST,false);
+        }
+
+  };
 }

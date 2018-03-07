@@ -75,6 +75,10 @@ public class Oefening {
     public List<Groepsbewerking> getGroepsbewerking() {
         return groepsbewerkingen;
     }
+    
+    public void setNaam(String naam) {
+        this.naam = naam;
+    }
 
     public void setOpgave(String opgave) {
         this.opgave = opgave;
@@ -83,7 +87,7 @@ public class Oefening {
     public void setAntwoord(String antwoord) {
         this.antwoord = antwoord;
     }
-
+    
     public void setFeedback(String feedback) {
         this.feedback = feedback;
     }

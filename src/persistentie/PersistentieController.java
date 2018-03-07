@@ -25,6 +25,10 @@ public class PersistentieController {
         oefeningMapper.insert(nieweOefening);
     }
 
+    public void slaOefeningOp(Oefening gewijzigdeOefening){
+        oefeningMapper.update(gewijzigdeOefening);
+    }
+
     public void wisOefening(Oefening teWissenoefening){
         oefeningMapper.delete(teWissenoefening);
     }

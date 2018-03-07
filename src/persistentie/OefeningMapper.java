@@ -57,7 +57,9 @@ public class OefeningMapper implements GenericDao<Oefening>{
 
     @Override
     public void update(Oefening object) {
+        em.getTransaction().begin();
         em.merge(object);
+        em.getTransaction().commit();        
     }
 
     @Override

@@ -20,6 +20,18 @@ public class OefeningBeheerder {
     public Oefening geefOefeningMetId(int id){
         return pc.geefOefeningMetId(id);
     }
+
+    public boolean slaOefeningOp(Oefening gewijzigdeOefening){
+        try
+        {
+            pc.slaOefeningOp(gewijzigdeOefening);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
     
     public boolean wisOefening(Oefening teWissenOefening){
         try
