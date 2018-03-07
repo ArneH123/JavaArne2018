@@ -95,6 +95,14 @@ public class OefeningenSchermController extends AnchorPane {
                     put(bewerkStatus.NIETAANPASBAAR,"A52A2A");
                     put(bewerkStatus.GEENSELECTIE,"999999");
     }};
+
+    private static Map<bewerkStatus, String> uitleg = new HashMap<bewerkStatus, String>()
+    {{
+                    put(bewerkStatus.AANPASBAAR,"Deze oefening is aanpasbaar. Pas de velden aan en druk op opslaan om te wijzigingen te bewaren.");
+                    put(bewerkStatus.AANGEPAST,"U ben bezig met aanpassen van de oefeningen. Uw wijzigingen zijn nog niet opgeslaan !");
+                    put(bewerkStatus.NIETAANPASBAAR,"U kan deze oefening niet wijzigen! \n Deze oefening is gekoppeld aan een BoB die in een openstaande of actieve sessie zit.");
+                    put(bewerkStatus.GEENSELECTIE,"(geen oefening geselecteerd)");
+    }};
     
     private void updateEditeerModus(bewerkStatus status)
     {
@@ -102,7 +110,11 @@ public class OefeningenSchermController extends AnchorPane {
         // Background achter = new Background(new BackgroundFill(Color.GREY, new CornerRadii(10), null));
         // naamField.setBackground(achter);
         
-        String stijl = "-fx-border-color: #"+kleuren.get(status) +";"; // als een status ontbreekt in de kleuren hashmap gaat er een fout komen > moeten we dit opvangen ?
+        // Direct gebruik van hasmap > als een status ontbreekt in de hashmap gaat er een fout komen > moeten we dit opvangen met een defualt ??        
+        String stijl = "-fx-border-color: #"+kleuren.get(status) +";"; 
+        
+        lblInfo.setText(uitleg.get(status));
+        lblInfo.setStyle("-fx-border-color: #"+kleuren.get(status) + "; -fx-text-fill: #"+kleuren.get(status) +";");
         
         naamField.setStyle(stijl);
         opgaveField.setStyle(stijl);

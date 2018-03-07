@@ -79,11 +79,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="lblInfo" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="593.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
+            <Label fx:id="lblInfo" alignment="CENTER" contentDisplay="CENTER" prefHeight="57.0" prefWidth="572.0" text="(info panel)" textAlignment="CENTER" textFill="#979797" />
             <GridPane prefHeight="648.0" prefWidth="568.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="10.0" prefWidth="232.20635986328125" />
