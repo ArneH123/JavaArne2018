@@ -33,7 +33,14 @@ public class Oefening {
         this.isInGebruik = copyOef.isInGebruik;
         this.groepsbewerkingen = copyOef.groepsbewerkingen;
     }
-
+ 
+    public Oefening(String naam, String opgave, String antwoord, String feedback) {
+        this.naam = naam;
+        this.opgave = opgave;
+        this.antwoord = antwoord;
+        this.feedback = feedback;
+    }
+ 
     public Oefening(String naam) {
         this.naam = naam;
     }

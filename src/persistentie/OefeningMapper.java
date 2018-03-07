@@ -29,33 +29,17 @@ public class OefeningMapper implements GenericDao<Oefening>{
         {
             emfactory = Persistence.createEntityManagerFactory(EntityName);
             em = emfactory.createEntityManager();
-            //DataInitializer.run(em); // enkel runnen om te vullen
         }
         catch (Exception e)
         {
-            dataBaseFout();
+            dataInitBaseFout();
         }
+        
+        //DataInitializer.run(em, true); // enkel runnen om te vullen
     }
     
-    final void dataBaseFout()
-    {
-        System.err.println("!!!");
-        System.err.println("Database initialisatie fout (DataInitializer) !");
-        System.err.println("Controleer volgende zaken:");
-        System.err.println("-1- Services > Databases > JavaDB > right click 'Start Server'");
-        System.err.println("-2- Services > Databases > jdbc:deby... > right click 'connect'");
-        System.err.println("-3- Projects > META-INF > persistence.xml");
-        System.err.println("  Kijk of de naam "+EntityName+" gekoppeld is aan de database van -2-");
-        System.err.println("---");
-        System.err.println("Het programma wordt nu gestopt. Gelieve de fout eerst te verhelpen");
-        System.err.println("!!!");
-        
-        System.exit(0);
-    }
-
-
     public List<Oefening> findAll(){
-        return (List<Oefening>)em.createQuery("SELECT o FROM Oefening o", Oefening.class).getResultList();
+        return (List<Oefening>)em.createQuery("SELECT o FROM Oefening o ORDER BY o.id ASC", Oefening.class).getResultList();
     }
 
     @Override
@@ -82,4 +66,21 @@ public class OefeningMapper implements GenericDao<Oefening>{
         em.remove(object);
         em.getTransaction().commit();
     }
+    
+    final void dataInitBaseFout()
+    {
+        System.err.println("!!!");
+        System.err.println("Database initialisatie fout (DataInitializer) !");
+        System.err.println("Controleer volgende zaken:");
+        System.err.println("-1- Services > Databases > JavaDB > right click 'Start Server'");
+        System.err.println("-2- Services > Databases > jdbc:deby... > right click 'connect'");
+        System.err.println("-3- Projects > META-INF > persistence.xml");
+        System.err.println("  Kijk of de naam "+EntityName+" gekoppeld is aan de database van -2-");
+        System.err.println("---");
+        System.err.println("Het programma wordt nu gestopt. Gelieve de fout eerst te verhelpen");
+        System.err.println("!!!");
+        
+        System.exit(0);
+    }
+    
 }

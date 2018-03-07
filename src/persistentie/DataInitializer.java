@@ -20,11 +20,18 @@ import javax.persistence.Persistence;
 public class DataInitializer {
     
     
-    public static void run(EntityManager em)
+    public static void run(EntityManager em, boolean wisOudeGegevens)
     {
-        em.getTransaction().begin();
-        initializeOefeningen(em);
-        em.getTransaction().commit();
+        try
+        {
+            em.getTransaction().begin();
+            if (wisOudeGegevens)
+                em.createNativeQuery("DELETE FROM ROOT.OEFENING").executeUpdate();
+
+            initializeOefeningen(em);
+            em.getTransaction().commit();
+            
+        } catch (Exception e) { System.err.println("Databasefout tijdens datainitialisatie. Klopt databasestructuur ?");  }
     }
     
     
