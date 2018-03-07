@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -49,18 +50,23 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private ListView<?> lstGroepsBewerkingen;
 
-    public OefeningenSchermController(OefeningBeheerder ob) {
+    public OefeningenSchermController() {
+    }
 
+    public Parent InitialiseerController(OefeningBeheerder ob)
+    {
+        this.ob = ob;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("OefeningenScherm.fxml"));
-        loader.setRoot(this);
         loader.setController(this);
-
         try {
-            loader.load();
+            return loader.load();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        this.ob = ob;
+    }
+
+     @FXML
+    void initialize(){
         buildGui();
     }
 
@@ -82,8 +88,16 @@ public class OefeningenSchermController extends AnchorPane {
     }
 
     private void buildGui() {
+        
+        // Debug
+        if (ob==null)
+            System.out.print("OB niet correct ingeladen");
+        if (oefeningenView==null)
+            System.out.print("FXML niet correct ingeladen");
+
         ObservableList<Oefening> data = ob.geefOefeningenAsLijst();
         oefeningenView.setItems(data);
+        
         oefeningenView.setCellFactory(param -> new ListCell<Oefening>() {
             @Override
             protected void updateItem(Oefening item, boolean empty) {
@@ -96,5 +110,6 @@ public class OefeningenSchermController extends AnchorPane {
                 }
             }
         });
+
     }
 }
