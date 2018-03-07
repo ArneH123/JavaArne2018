@@ -99,11 +99,26 @@ public class OefeningenSchermController extends AnchorPane {
     }
     @FXML
     private void detailCurrent(ActionEvent event) {
-          Oefening current = ob.geefOefeningMetId(oefeningenView.getSelectionModel().getSelectedItem().getId());
-          naamField.setText(current.getNaam());
-          opgaveField.setText(current.getOpgave());
-          antwoordField.setText(current.getAntwoord());
-          hintField.setText(current.getFeedback());
+          laadOefeningDetail();
+    }
+
+    private void laadOefeningDetail() 
+    {
+        Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
+        if (selected!=null)
+        {
+            naamField.setText(selected.getNaam());
+            opgaveField.setText(selected.getOpgave());
+            antwoordField.setText(selected.getAntwoord());
+            hintField.setText(selected.getFeedback());
+        }
+        else
+        {
+            naamField.setText("");
+            opgaveField.setText("");
+            antwoordField.setText("");
+            hintField.setText("");
+        }
     }
 
     private void buildGui() {
@@ -128,6 +143,14 @@ public class OefeningenSchermController extends AnchorPane {
                     String text = item.getNaam();
                     setText(text);
                 }
+            }
+        });
+        
+        oefeningenView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Oefening>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Oefening> observable, Oefening oldValue, Oefening newValue) {
+                laadOefeningDetail();
             }
         });
         
