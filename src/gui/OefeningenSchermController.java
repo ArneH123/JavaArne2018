@@ -139,7 +139,7 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private void nieuweOefening(ActionEvent event) {
         ob.voegOefeningToe(new Oefening("Nieuwe oefening"));
-        buildGui();
+        laadOefeningenLijst();
     }
 
     @FXML
@@ -149,7 +149,7 @@ public class OefeningenSchermController extends AnchorPane {
             return;
 
         ob.voegOefeningToe(new Oefening(selected));
-        buildGui();
+        laadOefeningenLijst();
 
     }
 
@@ -160,7 +160,7 @@ public class OefeningenSchermController extends AnchorPane {
         if (selected==null)
             return;
         ob.wisOefening(selected);
-        buildGui();
+        laadOefeningenLijst();
     }
 
     @FXML
@@ -201,7 +201,13 @@ public class OefeningenSchermController extends AnchorPane {
         updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
         
     }
-
+    private void laadOefeningenLijst()
+    {
+        filteredList = new FilteredList<>(ob.geefOefeningenAsLijst());
+        oefeningenView.setItems(filteredList);
+    }
+    
+    private FilteredList<Oefening> filteredList;
     private void buildGui() {
         
         // Debug
@@ -210,9 +216,6 @@ public class OefeningenSchermController extends AnchorPane {
         if (oefeningenView==null)
             System.out.print("FXML niet correct ingeladen");
 
-        ObservableList<Oefening> oefeningData = ob.geefOefeningenAsLijst();
-        FilteredList<Oefening> filteredList= new FilteredList<>(oefeningData);
-        oefeningenView.setItems(filteredList);
         
         oefeningenView.setCellFactory(param -> new ListCell<Oefening>() {
             @Override
@@ -240,6 +243,7 @@ public class OefeningenSchermController extends AnchorPane {
                 });
         });
 
+        laadOefeningenLijst();
         laadOefeningDetail(); // Trigger de geen selectie procedure
     }
 }
