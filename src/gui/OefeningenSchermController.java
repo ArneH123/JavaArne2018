@@ -8,7 +8,11 @@ package gui;
 import domein.Oefening;
 import domein.OefeningBeheerder;
 import java.io.IOException;
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +25,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
+
 /**
  * FXML Controller class
  *
@@ -28,27 +33,26 @@ import javafx.scene.layout.AnchorPane;
  */
 public class OefeningenSchermController extends AnchorPane {
 
-
     @FXML
     ListView<Oefening> oefeningenView;
-    
     @FXML
     private TextField naamField;
-    
     @FXML
     private TextArea opgaveField;
-    
     @FXML
     private TextArea antwoordField;
-    
     @FXML
     private TextArea hintField;
-
-    private OefeningBeheerder ob;
     @FXML
     private Label txtGroepsBewerking;
     @FXML
     private ListView<?> lstGroepsBewerkingen;
+    @FXML
+    private TextField txtLijstZoek;
+    @FXML
+    private ListView<?> txtListZoek;
+
+    private OefeningBeheerder ob;
 
     public OefeningenSchermController() {
     }
@@ -64,8 +68,8 @@ public class OefeningenSchermController extends AnchorPane {
             throw new RuntimeException(ex);
         }
     }
-
-     @FXML
+    
+    @FXML
     void initialize(){
         buildGui();
     }
@@ -73,13 +77,28 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private Button btnDetail;
 
+    private void activeerEditMode(boolean aanUit)
+    {
+        // later aan te vullen door achtergroundkleur ? (of toch gewoon setDisable gebruiken (lelkijk))
+        // Background achter = new Background(new BackgroundFill(Color.GREY, new CornerRadii(10), null));
+        // naamField.setBackground(achter);
+        
+        String stijl = (aanUit) ? "-fx-border-color: #006400;" : "-fx-border-color: #A52A2A;";
+        naamField.setStyle(stijl);
+        opgaveField.setStyle(stijl);
+        antwoordField.setStyle(stijl);
+        hintField.setStyle(stijl);
+        lstGroepsBewerkingen.setStyle(stijl);
+
+        naamField.setEditable(aanUit);
+        opgaveField.setEditable(aanUit);
+        antwoordField.setEditable(aanUit);
+        hintField.setEditable(aanUit);
+        
+        lstGroepsBewerkingen.setEditable(aanUit);
+    }
     @FXML
     private void detailCurrent(ActionEvent event) {
-//        OefeningDetailSchermController odc = new OefeningDetailSchermController(ob, oefeningenView.getSelectionModel().getSelectedIndex());
-//        Stage stage1 = new Stage();
-//        Scene scene1 = new Scene(odc);
-//        stage1.setScene(scene1);
-//        stage1.show();
           Oefening current = ob.geefOefeningMetId(oefeningenView.getSelectionModel().getSelectedItem().getId());
           naamField.setText(current.getNaam());
           opgaveField.setText(current.getOpgave());
@@ -95,8 +114,9 @@ public class OefeningenSchermController extends AnchorPane {
         if (oefeningenView==null)
             System.out.print("FXML niet correct ingeladen");
 
-        ObservableList<Oefening> data = ob.geefOefeningenAsLijst();
-        oefeningenView.setItems(data);
+        ObservableList<Oefening> oefeningData = ob.geefOefeningenAsLijst();
+        FilteredList<Oefening> filteredList= new FilteredList<>(oefeningData);
+        oefeningenView.setItems(filteredList);
         
         oefeningenView.setCellFactory(param -> new ListCell<Oefening>() {
             @Override
@@ -110,6 +130,13 @@ public class OefeningenSchermController extends AnchorPane {
                 }
             }
         });
-
+        
+        txtLijstZoek.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            filteredList.setPredicate( data -> {
+                return data.getNaam().contains(newValue);
+                });
+        });
+ 
+        activeerEditMode(false);
     }
 }
