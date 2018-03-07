@@ -38,6 +38,7 @@ import javafx.scene.paint.Color;
  */
 public class OefeningenSchermController extends AnchorPane {
     private OefeningBeheerder ob;
+    private Oefening laatsteSelectie = null;
     private FilteredList<Oefening> filteredList = null;
     
     private enum bewerkStatus {
@@ -155,11 +156,11 @@ public class OefeningenSchermController extends AnchorPane {
 
     @FXML
     private void kopieerOefening(ActionEvent event) {
-        Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
-        if (selected==null)
+        laatsteSelectie = oefeningenView.getSelectionModel().getSelectedItem();
+        if (laatsteSelectie==null)
             return;
 
-        ob.voegOefeningToe(new Oefening(selected));
+        ob.voegOefeningToe(new Oefening(laatsteSelectie));
         laadOefeningenLijst();
 
     }
@@ -167,34 +168,34 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private void wisOefening(ActionEvent event) {
         
-        Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
-        if (selected==null)
+        laatsteSelectie = oefeningenView.getSelectionModel().getSelectedItem();
+        if (laatsteSelectie==null)
             return;
 
-        ob.wisOefening(selected);
+        ob.wisOefening(laatsteSelectie);
         laadOefeningenLijst();
     }
 
     @FXML
     private void opslaanWijzigingen(ActionEvent event) {
         
-        Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
-        if (selected==null)
+        laatsteSelectie = oefeningenView.getSelectionModel().getSelectedItem();
+        if (laatsteSelectie==null)
             return;
 
-        selected.setNaam(naamField.getText());
-        selected.setOpgave(opgaveField.getText());
-        selected.setAntwoord(antwoordField.getText());
-        selected.setFeedback(hintField.getText());
+        laatsteSelectie.setNaam(naamField.getText());
+        laatsteSelectie.setOpgave(opgaveField.getText());
+        laatsteSelectie.setAntwoord(antwoordField.getText());
+        laatsteSelectie.setFeedback(hintField.getText());
         
-        ob.slaOefeningOp(selected);
-        laadOefeningenLijst(true);
+        ob.slaOefeningOp(laatsteSelectie);
+        laadOefeningenLijst();
     }
     
     private void laadOefeningDetail() 
     {
-        Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
-        boolean heeftGeenSelectie = (selected==null);
+        laatsteSelectie = oefeningenView.getSelectionModel().getSelectedItem();
+        boolean heeftGeenSelectie = (laatsteSelectie==null);
 
         btnKopieer.setDisable(heeftGeenSelectie);
         
@@ -213,13 +214,13 @@ public class OefeningenSchermController extends AnchorPane {
         // wel selectie
         // laad de gegevens
 
-        boolean isInGebruik = selected.getIsInGebruik();
+        boolean isInGebruik = laatsteSelectie.getIsInGebruik();
         btnWis.setDisable(isInGebruik);
         
-        naamField.setText(selected.getNaam());
-        opgaveField.setText(selected.getOpgave());
-        antwoordField.setText(selected.getAntwoord());
-        hintField.setText(selected.getFeedback());
+        naamField.setText(laatsteSelectie.getNaam());
+        opgaveField.setText(laatsteSelectie.getOpgave());
+        antwoordField.setText(laatsteSelectie.getAntwoord());
+        hintField.setText(laatsteSelectie.getFeedback());
 
         updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
         
@@ -227,23 +228,8 @@ public class OefeningenSchermController extends AnchorPane {
 
     private void laadOefeningenLijst()
     {
-        laadOefeningenLijst(false);
-    }
-    
-    private void laadOefeningenLijst(boolean forceerRefresh)
-    {
         filteredList = new FilteredList<>(ob.geefOefeningenAsLijst());
-        int selectedIndex = oefeningenView.getSelectionModel().getSelectedIndex();
-        
-        
-        if (forceerRefresh) // bij data update van setItems wordt er geen cache invalidate gedaan bij een gelijk aaltal items (dus de save funtie)
-            oefeningenView.setItems(null); // Als er beter manieren zijn om een listview te refreshen graag
-        
         oefeningenView.setItems(filteredList);
-
-        if (forceerRefresh) 
-            oefeningenView.getSelectionModel().select( selectedIndex);
-
     }
     
     private void buildGui() {
@@ -265,7 +251,20 @@ public class OefeningenSchermController extends AnchorPane {
                     String text = item.getNaam();
                     setText(text);
                 }
+            }  
+            @Override
+            protected boolean isItemChanged(Oefening oldItem, Oefening newItem) {
+                
+                // Voor de listview is een compare op naam genoeg
+                if (newItem==null && oldItem==null)
+                    return false;
+                
+                if (laatsteSelectie==null)
+                    return super.isItemChanged(oldItem, newItem);
+                
+                return laatsteSelectie.getNaam().equals(newItem.getNaam());
             }
+            
         });
         
         oefeningenView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Oefening>() {
@@ -295,7 +294,6 @@ public class OefeningenSchermController extends AnchorPane {
         private Control source;
         public OefeningDetailsGewijzigd(Control source) {
             this.source = source;
-            System.out.println(source.toString());
         }
 
         @Override
