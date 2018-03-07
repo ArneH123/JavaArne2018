@@ -66,6 +66,10 @@ public class Oefening {
     public String getFeedback() {
         return feedback;
     }
+    
+    public boolean getIsInGebruik() {
+        return isInGebruik;
+    }
 
     public List<Groepsbewerking> getGroepsbewerking() {
         return groepsbewerkingen;
@@ -83,10 +87,14 @@ public class Oefening {
         this.feedback = feedback;
     }
 
+    public void setIsInGebruik(boolean isInGebruik) {
+        this.isInGebruik = isInGebruik;
+    }
+
     public void setGroepsbewerking(List<Groepsbewerking> groepsbewerkingen) {
         this.groepsbewerkingen = groepsbewerkingen;
-    }
-    
+    }    
+
     public String toonOverzicht() {
         return null;
     }

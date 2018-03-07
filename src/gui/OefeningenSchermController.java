@@ -8,6 +8,8 @@ package gui;
 import domein.Oefening;
 import domein.OefeningBeheerder;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,6 +26,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 
 
 /**
@@ -33,6 +36,10 @@ import javafx.scene.layout.AnchorPane;
  */
 public class OefeningenSchermController extends AnchorPane {
     private OefeningBeheerder ob;
+    
+    private enum bewerkStatus {
+        AANPASBAAR, AANGEPAST, NIETAANPASBAAR, GEENSELECTIE
+    }
 
     @FXML
     ListView<Oefening> oefeningenView;
@@ -59,7 +66,7 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private Label lblInfo;
     @FXML
-    private Button btnSave;
+    private Button btnOpslaan;
 
     public Parent InitialiseerController(OefeningBeheerder ob)
     {
@@ -80,26 +87,38 @@ public class OefeningenSchermController extends AnchorPane {
         buildGui();
     }
 
-
-    private void activeerEditMode(boolean aanUit)
+    private static Map<bewerkStatus, String> kleuren = new HashMap<bewerkStatus, String>()
+    {{
+                    //put(bewerkStatus.AANPASBAAR,"006400");
+                    put(bewerkStatus.AANPASBAAR,"008200");
+                    put(bewerkStatus.AANGEPAST,"FFA500");
+                    put(bewerkStatus.NIETAANPASBAAR,"A52A2A");
+                    put(bewerkStatus.GEENSELECTIE,"999999");
+    }};
+    
+    private void updateEditeerModus(bewerkStatus status)
     {
         // later aan te vullen door achtergroundkleur ? (of toch gewoon setDisable gebruiken (lelkijk))
         // Background achter = new Background(new BackgroundFill(Color.GREY, new CornerRadii(10), null));
         // naamField.setBackground(achter);
         
-        String stijl = (!aanUit) ? "-fx-border-color: #006400;" : "-fx-border-color: #A52A2A;";
+        String stijl = "-fx-border-color: #"+kleuren.get(status) +";"; // als een status ontbreekt in de kleuren hashmap gaat er een fout komen > moeten we dit opvangen ?
+        
         naamField.setStyle(stijl);
         opgaveField.setStyle(stijl);
         antwoordField.setStyle(stijl);
         hintField.setStyle(stijl);
         lstGroepsBewerkingen.setStyle(stijl);
-
-        naamField.setEditable(aanUit);
-        opgaveField.setEditable(aanUit);
-        antwoordField.setEditable(aanUit);
-        hintField.setEditable(aanUit);
+        btnOpslaan.setStyle(stijl);
         
-        lstGroepsBewerkingen.setEditable(aanUit);
+        boolean aanpasBaar = (status==bewerkStatus.AANPASBAAR || status==bewerkStatus.AANGEPAST);
+
+        naamField.setEditable(aanpasBaar);
+        opgaveField.setEditable(aanpasBaar);
+        antwoordField.setEditable(aanpasBaar);
+        hintField.setEditable(aanpasBaar);
+        btnOpslaan.setDisable(!aanpasBaar);
+        
     }
     @FXML
     private void detailCurrent(ActionEvent event) {
@@ -109,20 +128,35 @@ public class OefeningenSchermController extends AnchorPane {
     private void laadOefeningDetail() 
     {
         Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
-        if (selected!=null)
-        {
-            naamField.setText(selected.getNaam());
-            opgaveField.setText(selected.getOpgave());
-            antwoordField.setText(selected.getAntwoord());
-            hintField.setText(selected.getFeedback());
-        }
-        else
+        boolean heeftGeenSelectie = (selected==null);
+
+        btnKopieer.setDisable(heeftGeenSelectie);
+        
+        if (heeftGeenSelectie)
         {
             naamField.setText("");
             opgaveField.setText("");
             antwoordField.setText("");
             hintField.setText("");
+            updateEditeerModus(bewerkStatus.GEENSELECTIE);
+            btnWis.setDisable(true);
+            
+            return;
         }
+        
+        // wel selectie
+        // laad de gegevens
+
+        boolean isInGebruik = selected.getIsInGebruik();
+        btnWis.setDisable(isInGebruik);
+        
+        naamField.setText(selected.getNaam());
+        opgaveField.setText(selected.getOpgave());
+        antwoordField.setText(selected.getAntwoord());
+        hintField.setText(selected.getFeedback());
+
+        updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
+        
     }
 
     private void buildGui() {
@@ -162,7 +196,7 @@ public class OefeningenSchermController extends AnchorPane {
                 return data.getNaam().toLowerCase().contains(newValue.toLowerCase());
                 });
         });
- 
-        activeerEditMode(false);
+
+        laadOefeningDetail(); // Trigger de geen selectie procedure
     }
 }
