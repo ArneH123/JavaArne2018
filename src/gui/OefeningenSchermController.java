@@ -162,7 +162,10 @@ public class OefeningenSchermController extends AnchorPane {
         if (laatsteSelectie==null)
             return;
 
-        ob.voegOefeningToe(new Oefening(laatsteSelectie));
+        Oefening kopie = new Oefening(laatsteSelectie);
+        kopie.setIsInGebruik(false); // een kopie kan nog nooit in gebruik zijn bij aanmaak
+        
+        ob.voegOefeningToe(kopie);
         laadOefeningenLijst();
         oefeningenView.getSelectionModel().selectLast();
     }
