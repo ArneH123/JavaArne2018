@@ -10,7 +10,6 @@ public class PersistentieController {
 
     public PersistentieController() {
         oefeningMapper = new OefeningMapper();
-        //DataInitializer.run(); // allee doen op eerste run
     }
 
     public ObservableList<Oefening> geefOefeningenAsLijst() {

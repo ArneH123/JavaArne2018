@@ -35,7 +35,13 @@ public class OefeningMapper implements GenericDao<Oefening>{
             dataInitBaseFout();
         }
         
-        //DataInitializer.run(em, true); // enkel runnen om te vullen
+        boolean resetAllData = false;
+        if (resetAllData)
+        {
+            DataInitializer.run(em, true); // enkel runnen om te vullen
+            System.out.print("Opgelet ! DataInitializer doet een dataReset op alle gegevens! Gegevens gaan dus verloren. Gelieve buiten debug resetAllData op vals te zetten");
+        }
+        
     }
     
     public List<Oefening> findAll(){
