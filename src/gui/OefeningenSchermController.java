@@ -112,9 +112,8 @@ public class OefeningenSchermController extends AnchorPane {
         
         // Direct gebruik van hasmap > als een status ontbreekt in de hashmap gaat er een fout komen > moeten we dit opvangen met een defualt ??        
         String stijl = "-fx-border-color: #"+kleuren.get(status) +";"; 
-        
+        lblInfo.setStyle(stijl + " -fx-text-fill: #"+kleuren.get(status) +";");
         lblInfo.setText(uitleg.get(status));
-        lblInfo.setStyle("-fx-border-color: #"+kleuren.get(status) + "; -fx-text-fill: #"+kleuren.get(status) +";");
         
         naamField.setStyle(stijl);
         opgaveField.setStyle(stijl);
@@ -137,6 +136,38 @@ public class OefeningenSchermController extends AnchorPane {
           laadOefeningDetail();
     }
 
+    @FXML
+    private void nieuweOefening(ActionEvent event) {
+        ob.voegOefeningToe(new Oefening("Nieuwe oefening"));
+        buildGui();
+    }
+
+    @FXML
+    private void kopieerOefening(ActionEvent event) {
+        Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
+        if (selected==null)
+            return;
+
+        ob.voegOefeningToe(new Oefening(selected));
+        buildGui();
+
+    }
+
+    @FXML
+    private void wisOefening(ActionEvent event) {
+        
+        Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();
+        if (selected==null)
+            return;
+        ob.wisOefening(selected);
+        buildGui();
+    }
+
+    @FXML
+    private void opslaanWijzigingen(ActionEvent event) {
+          laadOefeningDetail();
+    }
+    
     private void laadOefeningDetail() 
     {
         Oefening selected = oefeningenView.getSelectionModel().getSelectedItem();

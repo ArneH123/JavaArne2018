@@ -21,5 +21,26 @@ public class OefeningBeheerder {
         return pc.geefOefeningMetId(id);
     }
     
-        
+    public boolean wisOefening(Oefening teWissenOefening){
+        try
+        {
+            pc.wisOefening(teWissenOefening);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+    public boolean voegOefeningToe(Oefening nieuweOefening){
+        try
+        {
+            pc.voegOefeningToe(nieuweOefening);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 }

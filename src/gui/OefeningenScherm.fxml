@@ -39,7 +39,7 @@
                </VBox.margin></ListView>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnNieuw" mnemonicParsing="false" onAction="#detailCurrent" text="Nieuwe Oefening">
+                  <Button fx:id="btnNieuw" mnemonicParsing="false" onAction="#nieuweOefening" text="Nieuwe Oefening">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -47,7 +47,7 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="btnKopieer" mnemonicParsing="false" onAction="#detailCurrent" text="Kopieer oefening">
+                  <Button fx:id="btnKopieer" mnemonicParsing="false" onAction="#kopieerOefening" text="Kopieer oefening">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -55,7 +55,7 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="btnWis" mnemonicParsing="false" onAction="#detailCurrent" text="Wis oefening">
+                  <Button fx:id="btnWis" mnemonicParsing="false" onAction="#wisOefening" text="Wis oefening">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -163,7 +163,7 @@
             </GridPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnOpslaan" mnemonicParsing="false" onAction="#detailCurrent" text="Wijzigingen opslaan">
+                  <Button fx:id="btnOpslaan" mnemonicParsing="false" onAction="#opslaanWijzigingen" text="Wijzigingen opslaan">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>

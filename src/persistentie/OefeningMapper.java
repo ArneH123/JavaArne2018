@@ -9,8 +9,10 @@ import domein.Oefening;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
-import static persistentie.DataInitializer.em;
 
 /**
  *
@@ -18,20 +20,42 @@ import static persistentie.DataInitializer.em;
  */
 public class OefeningMapper implements GenericDao<Oefening>{
 
-    ObservableList<Oefening> oefeningen;
+    private EntityManagerFactory emfactory;
+    private EntityManager em;
+    private final String EntityName = "P2G11PU";
 
     public OefeningMapper() {
-    }
-
-    public ObservableList<Oefening> geefOefeningen() {
-        ObservableList<Oefening> oefeningenfx = FXCollections.observableArrayList();
-        oefeningenfx = oefeningen;
-        return oefeningenfx;
+        try
+        {
+            emfactory = Persistence.createEntityManagerFactory(EntityName);
+            em = emfactory.createEntityManager();
+            //DataInitializer.run(em); // enkel runnen om te vullen
+        }
+        catch (Exception e)
+        {
+            dataBaseFout();
+        }
     }
     
+    final void dataBaseFout()
+    {
+        System.err.println("!!!");
+        System.err.println("Database initialisatie fout (DataInitializer) !");
+        System.err.println("Controleer volgende zaken:");
+        System.err.println("-1- Services > Databases > JavaDB > right click 'Start Server'");
+        System.err.println("-2- Services > Databases > jdbc:deby... > right click 'connect'");
+        System.err.println("-3- Projects > META-INF > persistence.xml");
+        System.err.println("  Kijk of de naam "+EntityName+" gekoppeld is aan de database van -2-");
+        System.err.println("---");
+        System.err.println("Het programma wordt nu gestopt. Gelieve de fout eerst te verhelpen");
+        System.err.println("!!!");
+        
+        System.exit(0);
+    }
+
+
     public List<Oefening> findAll(){
-        Query queryAll = em.createQuery("SELECT o FROM Oefening o", Oefening.class);
-        return (List<Oefening>) queryAll.getResultList();
+        return (List<Oefening>)em.createQuery("SELECT o FROM Oefening o", Oefening.class).getResultList();
     }
 
     @Override
@@ -40,8 +64,11 @@ public class OefeningMapper implements GenericDao<Oefening>{
     }
 
     @Override
-    public void insert(Oefening object) {
+    public void insert(Oefening object) 
+    {
+        em.getTransaction().begin();
         em.persist(object);
+        em.getTransaction().commit();
     }
 
     @Override
@@ -51,6 +78,8 @@ public class OefeningMapper implements GenericDao<Oefening>{
 
     @Override
     public void delete(Oefening object) {
+        em.getTransaction().begin();
         em.remove(object);
+        em.getTransaction().commit();
     }
 }

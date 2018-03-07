@@ -15,7 +15,6 @@ public class Oefening {
     @Id
     @GeneratedValue
     private int id;
-    
     private String naam;
     private String opgave;
     private String antwoord;
@@ -24,25 +23,20 @@ public class Oefening {
 //    @OneToMany(mappedBy="Groepsbewerking", cascade = CascadeType.PERSIST)
     private List<Groepsbewerking> groepsbewerkingen;
 
-    public Oefening(String naam,String opgave, String antwoord, ArrayList<Groepsbewerking> groepsbewerkingen) {
-        this.naam = naam;
-        this.opgave = opgave;
-        this.antwoord = antwoord;
-        this.groepsbewerkingen = groepsbewerkingen;
+    // Copy constructir
+    public Oefening(Oefening copyOef) {
+        //copyOef
+        this.naam = copyOef.naam;
+        this.opgave = copyOef.opgave;
+        this.antwoord = copyOef.antwoord;
+        this.feedback = copyOef.feedback;
+        this.isInGebruik = copyOef.isInGebruik;
+        this.groepsbewerkingen = copyOef.groepsbewerkingen;
     }
 
     public Oefening(String naam) {
         this.naam = naam;
     }
-
-    public Oefening(String naam, String opgave, String antwoord, String feedback) {
-        this.naam = naam;
-        this.opgave = opgave;
-        this.antwoord = antwoord;
-        this.feedback = feedback;
-    }
-    
-    
 
     public Oefening() {
     }

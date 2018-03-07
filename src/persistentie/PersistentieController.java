@@ -1,6 +1,7 @@
 package persistentie;
 
 import domein.Oefening;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,7 +10,7 @@ public class PersistentieController {
 
     public PersistentieController() {
         oefeningMapper = new OefeningMapper();
-        DataInitializer.run();
+        //DataInitializer.run(); // allee doen op eerste run
     }
 
     public ObservableList<Oefening> geefOefeningenAsLijst() {
@@ -18,6 +19,14 @@ public class PersistentieController {
     
     public Oefening geefOefeningMetId(int id){
         return oefeningMapper.findById(id);
+    }
+    
+    public void voegOefeningToe(Oefening nieweOefening){
+        oefeningMapper.insert(nieweOefening);
+    }
+
+    public void wisOefening(Oefening teWissenoefening){
+        oefeningMapper.delete(teWissenoefening);
     }
     
 }

@@ -18,42 +18,17 @@ import javax.persistence.Persistence;
  * @author Arne
  */
 public class DataInitializer {
-    static EntityManagerFactory emfactory;
-    static EntityManager em;
-    static final String EntityName = "P2G11PU";
     
-    public static void run(){
-        try
-        {
-            emfactory = Persistence.createEntityManagerFactory(EntityName);
-            em = emfactory.createEntityManager();
-
-            em.getTransaction().begin();
-            initializeOefeningen();
-            em.getTransaction().commit();
-        }
-        catch (Exception e)
-        {
-            dataBaseFout();
-        }
-    }
     
-    public static void dataBaseFout()
+    public static void run(EntityManager em)
     {
-        System.err.println("!!!");
-        System.err.println("Database initialisatie fout !");
-        System.err.println("Controleer volgende zaken:");
-        System.err.println("-1- Services > Databases > JavaDB > right click 'Start Server'");
-        System.err.println("-2- Services > Databases > jdbc:deby... > right click 'connect'");
-        System.err.println("-3- Projects > META-INF > persistence.xml");
-        System.err.println("  Kijk of de naam "+EntityName+" gekoppeld is aan de database van -2-");
-        System.err.println("---");
-        System.err.println("Het programma wordt nu gestopt. Gelieve de fout eerst te verhelpen");
-        System.err.println("!!!");
-        System.exit(0);
+        em.getTransaction().begin();
+        initializeOefeningen(em);
+        em.getTransaction().commit();
     }
     
-    public static void initializeOefeningen(){
+    
+    private static void initializeOefeningen(EntityManager em){
         List<Oefening> oefeningen = new ArrayList();
         Oefening o1 = new Oefening("Oefening wortels AB", "Wat is de vierkantswortel van 4?", "2", "De helft");
         Oefening o2 = new Oefening("Oefening breuken","Wat is 8/2?", "4", "Het dubbele");
@@ -82,15 +57,8 @@ public class DataInitializer {
         oefeningen.add(o10);
         oefeningen.add(o11);      
         
-        try
-        {
-            for(Oefening o : oefeningen){
-                em.persist(o);
-            }
+        for(Oefening o : oefeningen){
+            em.persist(o);
         }
-        catch (Exception e)
-        {
-            dataBaseFout();
-        }        
     }
 }
