@@ -32,6 +32,7 @@ import javafx.scene.layout.AnchorPane;
  * @author Arne
  */
 public class OefeningenSchermController extends AnchorPane {
+    private OefeningBeheerder ob;
 
     @FXML
     ListView<Oefening> oefeningenView;
@@ -50,12 +51,15 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private TextField txtLijstZoek;
     @FXML
-    private ListView<?> txtListZoek;
-
-    private OefeningBeheerder ob;
-
-    public OefeningenSchermController() {
-    }
+    private Button btnNieuw;
+    @FXML
+    private Button btnKopieer;
+    @FXML
+    private Button btnWis;
+    @FXML
+    private Label lblInfo;
+    @FXML
+    private Button btnSave;
 
     public Parent InitialiseerController(OefeningBeheerder ob)
     {
@@ -71,11 +75,11 @@ public class OefeningenSchermController extends AnchorPane {
     
     @FXML
     void initialize(){
+        // vergeet de @FXML niet > ander wordt deze routine niet uitgevoerd !
+        // Soms wordt deze gewist bij auto generatie
         buildGui();
     }
 
-    @FXML
-    private Button btnDetail;
 
     private void activeerEditMode(boolean aanUit)
     {
@@ -83,7 +87,7 @@ public class OefeningenSchermController extends AnchorPane {
         // Background achter = new Background(new BackgroundFill(Color.GREY, new CornerRadii(10), null));
         // naamField.setBackground(achter);
         
-        String stijl = (aanUit) ? "-fx-border-color: #006400;" : "-fx-border-color: #A52A2A;";
+        String stijl = (!aanUit) ? "-fx-border-color: #006400;" : "-fx-border-color: #A52A2A;";
         naamField.setStyle(stijl);
         opgaveField.setStyle(stijl);
         antwoordField.setStyle(stijl);
@@ -147,7 +151,6 @@ public class OefeningenSchermController extends AnchorPane {
         });
         
         oefeningenView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Oefening>() {
-
             @Override
             public void changed(ObservableValue<? extends Oefening> observable, Oefening oldValue, Oefening newValue) {
                 laadOefeningDetail();
@@ -156,7 +159,7 @@ public class OefeningenSchermController extends AnchorPane {
         
         txtLijstZoek.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             filteredList.setPredicate( data -> {
-                return data.getNaam().contains(newValue);
+                return data.getNaam().toLowerCase().contains(newValue.toLowerCase());
                 });
         });
  

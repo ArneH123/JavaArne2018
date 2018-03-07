@@ -20,6 +20,7 @@ public class Oefening {
     private String opgave;
     private String antwoord;
     private String feedback;
+    private boolean isInGebruik = false;
 //    @OneToMany(mappedBy="Groepsbewerking", cascade = CascadeType.PERSIST)
     private List<Groepsbewerking> groepsbewerkingen;
 
