@@ -152,6 +152,8 @@ public class OefeningenSchermController extends AnchorPane {
     private void nieuweOefening(ActionEvent event) {
         ob.voegOefeningToe(new Oefening("Nieuwe oefening"));
         laadOefeningenLijst();
+        oefeningenView.getSelectionModel().selectLast();
+
     }
 
     @FXML
@@ -160,9 +162,12 @@ public class OefeningenSchermController extends AnchorPane {
         if (laatsteSelectie==null)
             return;
 
-        ob.voegOefeningToe(new Oefening(laatsteSelectie));
+        Oefening kopie = new Oefening(laatsteSelectie);
+        kopie.setIsInGebruik(false); // een kopie kan nog nooit in gebruik zijn bij aanmaak
+        
+        ob.voegOefeningToe(kopie);
         laadOefeningenLijst();
-
+        oefeningenView.getSelectionModel().selectLast();
     }
 
     @FXML
@@ -174,7 +179,7 @@ public class OefeningenSchermController extends AnchorPane {
 
         ob.wisOefening(laatsteSelectie);
         laadOefeningenLijst();
-    }
+     }
 
     @FXML
     private void opslaanWijzigingen(ActionEvent event) {
@@ -231,6 +236,7 @@ public class OefeningenSchermController extends AnchorPane {
     {
         filteredList = new FilteredList<>(ob.geefOefeningenAsLijst());
         oefeningenView.setItems(filteredList);
+        txtLijstZoek.setText("");
     }
     
     private void buildGui() {
