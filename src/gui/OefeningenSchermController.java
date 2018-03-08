@@ -192,6 +192,7 @@ public class OefeningenSchermController extends AnchorPane {
         laadOefeningenLijst();
     }
     
+    //laat details van oefening zien
     private void laadOefeningDetail() 
     {
         laatsteSelectie = oefeningenView.getSelectionModel().getSelectedItem();
@@ -234,7 +235,7 @@ public class OefeningenSchermController extends AnchorPane {
     
     private void buildGui() {
         
-        // Debug - to be removed avhteraf
+        // Debug - to be removed achteraf
         if (ob==null)
             System.out.print("OB niet correct ingeladen");
         if (oefeningenView==null)
@@ -251,7 +252,10 @@ public class OefeningenSchermController extends AnchorPane {
                     String text = item.getNaam();
                     setText(text);
                 }
-            }  
+            } 
+            
+            //kijken of er gewijzigd is of niet, eerste if niet, tweede if is veranderd, oude wordt door nieuwe vervangen
+            //return: laatst geselecteerde naam moet overeenkomen met wijziging van naam
             @Override
             protected boolean isItemChanged(Oefening oldItem, Oefening newItem) {
                 
@@ -267,6 +271,7 @@ public class OefeningenSchermController extends AnchorPane {
             
         });
         
+        //implementeert van listener, per klik methode changed uitvoeren van laadOef
         oefeningenView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Oefening>() {
             @Override
             public void changed(ObservableValue<? extends Oefening> observable, Oefening oldValue, Oefening newValue) {
@@ -274,12 +279,14 @@ public class OefeningenSchermController extends AnchorPane {
             }
         });
         
+        //implementeert van listener, is de filter functie voor oefeningen
         txtLijstZoek.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             filteredList.setPredicate( data -> {
                 return data.getNaam().toLowerCase().contains(newValue.toLowerCase());
                 });
         });
         
+        //roept oefeningDetailsGewijzigd aan om wijzigingen op te slaan
         naamField.textProperty().addListener(new OefeningDetailsGewijzigd(naamField));
         opgaveField.textProperty().addListener(new OefeningDetailsGewijzigd(opgaveField));
         antwoordField.textProperty().addListener(new OefeningDetailsGewijzigd(antwoordField));
@@ -296,6 +303,7 @@ public class OefeningenSchermController extends AnchorPane {
             this.source = source;
         }
 
+        //kleur van randen + status oefening aanpassen 
         @Override
         public void changed(ObservableValue observable, Object oldValue, Object newValue) 
         {
