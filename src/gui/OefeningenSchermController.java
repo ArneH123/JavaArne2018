@@ -7,14 +7,13 @@ package gui;
 
 import domein.Oefening;
 import domein.OefeningBeheerder;
+import java.awt.Desktop;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,14 +27,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
+import javax.swing.JButton;
 
-
-/**
- * FXML Controller class
- *
- * @author Arne
- */
 public class OefeningenSchermController extends AnchorPane {
     private OefeningBeheerder ob;
     private Oefening laatsteSelectie = null;
@@ -50,17 +43,19 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private TextField naamField;
     @FXML
-    private TextArea opgaveField;
-    @FXML
     private TextArea antwoordField;
-    @FXML
-    private TextArea hintField;
     @FXML
     private Label txtGroepsBewerking;
     @FXML
-    private ListView<?> lstGroepsBewerkingen;
-    @FXML
     private TextField txtLijstZoek;
+    @FXML
+    private Button btnOpenOpgave;
+    @FXML
+    private Button btnWijzigOpgave;
+    @FXML
+    private Button btnOpenFeedback;
+    @FXML
+    private Button btnWijzigFeedback;
     @FXML
     private Button btnNieuw;
     @FXML
@@ -127,19 +122,21 @@ public class OefeningenSchermController extends AnchorPane {
         if (updateAlleStijlen)
         {
             naamField.setStyle(stijl);
-            opgaveField.setStyle(stijl);
+            //opgaveField.setStyle(stijl);
             antwoordField.setStyle(stijl);
-            hintField.setStyle(stijl);
-            lstGroepsBewerkingen.setStyle(stijl);
+            //hintField.setStyle(stijl);
         } 
         btnOpslaan.setStyle(stijl);
         
         boolean aanpasBaar = (status==bewerkStatus.AANPASBAAR || status==bewerkStatus.AANGEPAST);
 
         naamField.setEditable(aanpasBaar);
-        opgaveField.setEditable(aanpasBaar);
+        btnOpenOpgave.setDisable(aanpasBaar);
+        //btnWijzigOpgave.setDisable(!aanpasBaar);
+        //btnWijzigFeedback.setDisable(!aanpasBaar);
+        //opgaveField.setEditable(aanpasBaar);
         antwoordField.setEditable(aanpasBaar);
-        hintField.setEditable(aanpasBaar);
+        //hintField.setEditable(aanpasBaar);
         btnOpslaan.setDisable(!aanpasBaar);
         
     }
@@ -189,9 +186,10 @@ public class OefeningenSchermController extends AnchorPane {
             return;
 
         laatsteSelectie.setNaam(naamField.getText());
-        laatsteSelectie.setOpgave(opgaveField.getText());
+        //laatsteSelectie.setOpgave(btnWijzigOpgave.);
+        //laatsteSelectie.setOpgave(opgaveField.getText());
         laatsteSelectie.setAntwoord(antwoordField.getText());
-        laatsteSelectie.setFeedback(hintField.getText());
+        //laatsteSelectie.setFeedback(hintField.getText());
         
         ob.slaOefeningOp(laatsteSelectie);
         laadOefeningenLijst();
@@ -208,9 +206,13 @@ public class OefeningenSchermController extends AnchorPane {
         if (heeftGeenSelectie)
         {
             naamField.setText("");
-            opgaveField.setText("");
+            btnOpenOpgave.setDisable(heeftGeenSelectie);
+            //btnWijzigOpgave.setDisable(heeftGeenSelectie);
+            //btnOpenFeedback.setDisable(heeftGeenSelectie);
+            //btnWijzigFeedback.setDisable(heeftGeenSelectie);
+            //opgaveField.setText("");
             antwoordField.setText("");
-            hintField.setText("");
+            //hintField.setText("");
             updateEditeerModus(bewerkStatus.GEENSELECTIE);
             btnWis.setDisable(true);
             
@@ -224,9 +226,9 @@ public class OefeningenSchermController extends AnchorPane {
         btnWis.setDisable(isInGebruik);
         
         naamField.setText(laatsteSelectie.getNaam());
-        opgaveField.setText(laatsteSelectie.getOpgave());
+        //opgaveField.setText(laatsteSelectie.getOpgave());
         antwoordField.setText(laatsteSelectie.getAntwoord());
-        hintField.setText(laatsteSelectie.getFeedback());
+        //hintField.setText(laatsteSelectie.getFeedback());
 
         updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
         
@@ -237,6 +239,46 @@ public class OefeningenSchermController extends AnchorPane {
         filteredList = new FilteredList<>(ob.geefOefeningenAsLijst());
         oefeningenView.setItems(filteredList);
         txtLijstZoek.setText("");
+    }
+    
+    private void openPdf(){
+        JButton btnOpenOpgave = new JButton("Open");
+        JButton btnOpenFeedback = new JButton("Open");
+        
+        btnOpenOpgave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e)
+            {
+                try
+                {
+                    Desktop.getDesktop().open(new java.io.File("Oefening_Domino.pdf"));
+                }
+                catch(IOException ex) 
+                {
+                    ex.printStackTrace();
+                }
+            }
+        });  
+        
+        btnOpenFeedback.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e)
+            {
+                try
+                {
+                    Desktop.getDesktop().open(new java.io.File("Oefening_Domino.pdf"));
+                }
+                catch(IOException ex) 
+                {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+    
+    private void wijzigPdf(){
+        JButton btnWijzigOpgave = new JButton("Wijzig");
+        JButton btnWijzigFeedback = new JButton("Wijzig");
     }
     
     private void buildGui() {
@@ -294,9 +336,9 @@ public class OefeningenSchermController extends AnchorPane {
         
         //roept oefeningDetailsGewijzigd aan om wijzigingen op te slaan
         naamField.textProperty().addListener(new OefeningDetailsGewijzigd(naamField));
-        opgaveField.textProperty().addListener(new OefeningDetailsGewijzigd(opgaveField));
+        //opgaveField.textProperty().addListener(new OefeningDetailsGewijzigd(opgaveField));
         antwoordField.textProperty().addListener(new OefeningDetailsGewijzigd(antwoordField));
-        hintField.textProperty().addListener(new OefeningDetailsGewijzigd(hintField));
+        //hintField.textProperty().addListener(new OefeningDetailsGewijzigd(hintField));
             
         laadOefeningenLijst();
         laadOefeningDetail(); // Trigger de geen selectie procedure
