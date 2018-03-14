@@ -18,10 +18,11 @@ public class Oefening {
     private String naam;
     private String opgave;
     private String antwoord;
+    private double antwoordd;
     private String feedback;
     private boolean isInGebruik = false;
 //    @OneToMany(mappedBy="Groepsbewerking", cascade = CascadeType.PERSIST)
-    private List<Groepsbewerking> groepsbewerkingen;
+    private List<iGroepsBewerking> groepsbewerkingen;
 
     // Copy constructir
     public Oefening(Oefening copyOef) {
@@ -72,7 +73,7 @@ public class Oefening {
         return isInGebruik;
     }
 
-    public List<Groepsbewerking> getGroepsbewerking() {
+    public List<iGroepsBewerking> getGroepsbewerking() {
         return groepsbewerkingen;
     }
     
@@ -96,11 +97,17 @@ public class Oefening {
         this.isInGebruik = isInGebruik;
     }
 
-    public void setGroepsbewerking(List<Groepsbewerking> groepsbewerkingen) {
+    public void setGroepsbewerking(List<iGroepsBewerking> groepsbewerkingen) {
         this.groepsbewerkingen = groepsbewerkingen;
     }    
 
     public String toonOverzicht() {
         return null;
     }
+
+    public double getAntwoordd() {
+        return antwoordd;
+    }
+    
+    
 }

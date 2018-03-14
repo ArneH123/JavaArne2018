@@ -9,6 +9,7 @@ package domein;
  *
  * @author Arne
  */
-public class Groepsbewerking {
-    
+public interface iGroepsBewerking {
+    String geefBewerkingToString();
+    boolean uitkomstIsGeldig(Oefening oefening, double getal);
 }
