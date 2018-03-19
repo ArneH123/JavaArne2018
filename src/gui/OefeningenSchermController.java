@@ -49,14 +49,6 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private TextField txtLijstZoek;
     @FXML
-    private Button btnOpenOpgave;
-    @FXML
-    private Button btnWijzigOpgave;
-    @FXML
-    private Button btnOpenFeedback;
-    @FXML
-    private Button btnWijzigFeedback;
-    @FXML
     private Button btnNieuw;
     @FXML
     private Button btnKopieer;
@@ -66,6 +58,14 @@ public class OefeningenSchermController extends AnchorPane {
     private Label lblInfo;
     @FXML
     private Button btnOpslaan;
+    @FXML
+    private Button btnOpenOpgave;
+    @FXML
+    private Button btnWijzigHint;
+    @FXML
+    private Button btnWijzigOpgave;
+    @FXML
+    private Button btnOpenHint;
 
     public Parent InitialiseerController(OefeningBeheerder ob)
     {
@@ -131,13 +131,13 @@ public class OefeningenSchermController extends AnchorPane {
         boolean aanpasBaar = (status==bewerkStatus.AANPASBAAR || status==bewerkStatus.AANGEPAST);
 
         naamField.setEditable(aanpasBaar);
-        btnOpenOpgave.setDisable(aanpasBaar);
-        //btnWijzigOpgave.setDisable(!aanpasBaar);
-        //btnWijzigFeedback.setDisable(!aanpasBaar);
-        //opgaveField.setEditable(aanpasBaar);
         antwoordField.setEditable(aanpasBaar);
-        //hintField.setEditable(aanpasBaar);
         btnOpslaan.setDisable(!aanpasBaar);
+        
+    btnOpenOpgave.setDisable(!aanpasBaar);
+    btnWijzigHint.setDisable(!aanpasBaar);
+    btnWijzigOpgave.setDisable(!aanpasBaar);
+    btnOpenHint.setDisable(!aanpasBaar);
         
     }
     @FXML
@@ -177,6 +177,12 @@ public class OefeningenSchermController extends AnchorPane {
         ob.wisOefening(laatsteSelectie);
         laadOefeningenLijst();
      }
+    
+    @FXML
+    private void wijzigOpgave(ActionEvent event)
+    {
+        
+    }
 
     @FXML
     private void opslaanWijzigingen(ActionEvent event) {
