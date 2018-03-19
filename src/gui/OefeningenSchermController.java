@@ -7,11 +7,29 @@ package gui;
 
 import domein.Oefening;
 import domein.OefeningBeheerder;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Desktop;
+import java.awt.Dialog.ModalityType;
+import java.awt.HeadlessException;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
@@ -27,7 +45,17 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JMenu;
+import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class OefeningenSchermController extends AnchorPane {
     private OefeningBeheerder ob;
@@ -66,6 +94,11 @@ public class OefeningenSchermController extends AnchorPane {
     private Button btnWijzigOpgave;
     @FXML
     private Button btnOpenHint;
+    
+    private Blob opgavePdfBinary;
+    public OefeningenSchermController()
+    {
+    }
 
     public Parent InitialiseerController(OefeningBeheerder ob)
     {
@@ -73,7 +106,8 @@ public class OefeningenSchermController extends AnchorPane {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("OefeningenScherm.fxml"));
         loader.setController(this);
         try {
-            return loader.load();
+            p = loader.load();
+            return p;
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -177,11 +211,63 @@ public class OefeningenSchermController extends AnchorPane {
         ob.wisOefening(laatsteSelectie);
         laadOefeningenLijst();
      }
+    final JFrame frame = new JFrame();
+        JFileChooser fc = new JFileChooser();
+
+    
+    public static byte[] readFully(InputStream stream) throws IOException
+    {
+        byte[] buffer = new byte[8192];
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        int bytesRead;
+        while ((bytesRead = stream.read(buffer)) != -1)
+        {
+            baos.write(buffer, 0, bytesRead);
+        }
+        return baos.toByteArray();
+    }
+        
+    public static byte[] loadFile(File sourcePath) throws IOException
+    {
+        InputStream inputStream = null;
+        try 
+        {
+            inputStream = new FileInputStream(sourcePath);
+            return readFully(inputStream);
+        } 
+        finally
+        {
+            if (inputStream != null)
+            {
+                inputStream.close();
+            }
+        }
+    }
     
     @FXML
     private void wijzigOpgave(ActionEvent event)
     {
+        JFileChooser fileChooser = new JFileChooser();
         
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Bestanden", "pdf");
+        fileChooser.addChoosableFileFilter(filter);
+        fileChooser.showOpenDialog(null);
+        
+        String fileName = fileChooser.getSelectedFile().getPath();
+        File f = new File(fileName);
+        
+        Blob pdfBinary;
+        if(f.exists() && !f.isDirectory()) { 
+            try {
+                byte[] buff = loadFile(f);
+                opgavePdfBinary = new SerialBlob(buff);
+            } catch (Exception ex) {
+                Logger.getLogger(OefeningenSchermController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
     }
 
     @FXML
@@ -196,7 +282,7 @@ public class OefeningenSchermController extends AnchorPane {
         //laatsteSelectie.setOpgave(opgaveField.getText());
         laatsteSelectie.setAntwoord(antwoordField.getText());
         //laatsteSelectie.setFeedback(hintField.getText());
-        
+        laatsteSelectie.setOpgave(opgavePdfBinary);
         ob.slaOefeningOp(laatsteSelectie);
         laadOefeningenLijst();
     }

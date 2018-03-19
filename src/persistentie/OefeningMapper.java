@@ -35,7 +35,7 @@ public class OefeningMapper implements GenericDao<Oefening>{
             dataInitBaseFout();
         }
         
-        boolean resetAllData = false;
+        boolean resetAllData = true;
         if (resetAllData)
         {
             DataInitializer.run(em, true); // enkel runnen om te vullen

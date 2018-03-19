@@ -1,5 +1,6 @@
 package domein;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -17,6 +18,7 @@ public class Oefening {
     private int id;
     private String naam;
     private String opgave;
+    private Blob opgavePDF;
     private String antwoord;
     private double antwoordd;
     private String feedback;
@@ -30,6 +32,7 @@ public class Oefening {
         this.naam = copyOef.naam;
         this.opgave = copyOef.opgave;
         this.antwoord = copyOef.antwoord;
+        this.opgavePDF = copyOef.opgavePDF;
         this.feedback = copyOef.feedback;
         this.isInGebruik = copyOef.isInGebruik;
         this.groepsbewerkingen = copyOef.groepsbewerkingen;
@@ -57,9 +60,11 @@ public class Oefening {
         return naam;
     }
     
+    /*
     public String getOpgave() {
         return opgave;
     }
+    */
 
     public String getAntwoord() {
         return antwoord;
@@ -87,6 +92,14 @@ public class Oefening {
 
     public void setAntwoord(String antwoord) {
         this.antwoord = antwoord;
+    }
+
+    public void setOpgave(Blob opgavePDF) {
+        this.opgavePDF = opgavePDF;
+    }
+
+    public Blob getOpgave() {
+        return this.opgavePDF;
     }
     
     public void setFeedback(String feedback) {
