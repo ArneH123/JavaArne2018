@@ -145,12 +145,12 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnOpenHint" mnemonicParsing="false" prefHeight="27.0" prefWidth="112.0" text="Open" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <Button fx:id="btnOpenHint" mnemonicParsing="false" onAction="#openHint" prefHeight="27.0" prefWidth="112.0" text="Open" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnWijzigHint" mnemonicParsing="false" prefHeight="27.0" prefWidth="112.0" text="Wijzig" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <Button fx:id="btnWijzigHint" mnemonicParsing="false" onAction="#wijzigHint" prefHeight="27.0" prefWidth="112.0" text="Wijzig" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets left="170.0" />
                      </GridPane.margin>

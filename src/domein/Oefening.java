@@ -39,6 +39,7 @@ public class Oefening {
         this.opgave = copyOef.opgave;
         this.antwoord = copyOef.antwoord;
         this.opgavePDFBlob = copyOef.opgavePDFBlob;
+        this.hintPDFBlob = copyOef.hintPDFBlob;
         this.feedback = copyOef.feedback;
         this.isInGebruik = copyOef.isInGebruik;
         this.groepsbewerkingen = copyOef.groepsbewerkingen;
@@ -113,6 +114,20 @@ public class Oefening {
         }
     }
 
+    public void setHint(Blob hintPDF) {
+        
+        try {
+            if (hintPDF==null)
+                return;
+            
+            int blobLength = (int) hintPDF.length();  
+            this.hintPDFBlob = hintPDF.getBytes(1, blobLength);
+        } catch (SQLException ex) {
+            Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     public Blob getOpgave() {
         try {
             if (this.opgavePDFBlob==null)
@@ -120,13 +135,25 @@ public class Oefening {
             
             Blob opgavePdfBinary = new SerialBlob(this.opgavePDFBlob);
             return opgavePdfBinary;
-            
-            //return this.opgavePDF;
         } catch (SQLException ex) {
             Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
+    
+    public Blob getHint() {
+        try {
+            if (this.hintPDFBlob==null)
+                return null;
+            
+            Blob hintPdfBinary = new SerialBlob(this.hintPDFBlob);
+            return hintPdfBinary;
+        } catch (SQLException ex) {
+            Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
     
     public void setFeedback(String feedback) {
         this.feedback = feedback;

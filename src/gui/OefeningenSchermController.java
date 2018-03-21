@@ -94,6 +94,8 @@ public class OefeningenSchermController extends AnchorPane {
     private Button btnOpenHint;
     
     private Blob opgavePdfBinary;
+    private Blob hintPdfBinary;
+
     public OefeningenSchermController(Stage stg)
     {
         this.stage = stg;
@@ -170,12 +172,19 @@ public class OefeningenSchermController extends AnchorPane {
         btnWijzigOpgave.setDisable(!aanpasBaar);
         btnOpenHint.setDisable(!aanpasBaar);
         
-        boolean found = false;
+        boolean foundOpgave = false;
         if (laatsteSelectie!=null)
             opgavePdfBinary = laatsteSelectie.getOpgave();
+
+        boolean foundHint = false;
+        if (laatsteSelectie!=null)
+            hintPdfBinary = laatsteSelectie.getHint();
         
-        found = (opgavePdfBinary!=null);
-        btnOpenOpgave.setDisable(!found);
+        foundOpgave = (opgavePdfBinary!=null);
+            btnOpenOpgave.setDisable(!foundOpgave);
+
+        foundHint = (hintPdfBinary!=null);
+            btnOpenHint.setDisable(!foundHint);
     }
     @FXML
     private void detailCurrent(ActionEvent event) {
@@ -281,6 +290,37 @@ public class OefeningenSchermController extends AnchorPane {
     }
     
     @FXML
+    private void openHint(ActionEvent event)
+    {
+        openPDFInDefaultViewer(laatsteSelectie.getHint());
+    }
+
+     @FXML
+    private void wijzigHint(ActionEvent event)
+    {
+         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF Files (*.txt)", "*.pdf");
+        fc.getExtensionFilters().add(extFilter);
+        
+        String userDirectoryString = System.getProperty("user.home");
+        File userDirectory = new File(userDirectoryString);
+        fc.setInitialDirectory(userDirectory);
+
+        File f = fc.showOpenDialog(this.stage);
+        
+        if (f==null)
+            return;
+
+        if(f.exists() && !f.isDirectory()) { 
+            try {
+                byte[] buff = loadFile(f);
+                hintPdfBinary = new SerialBlob(buff);
+            } catch (Exception ex) {
+                Logger.getLogger(OefeningenSchermController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    @FXML
     private void wijzigOpgave(ActionEvent event)
     {
          FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF Files (*.txt)", "*.pdf");
@@ -303,36 +343,6 @@ public class OefeningenSchermController extends AnchorPane {
                 Logger.getLogger(OefeningenSchermController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        /*
- FileChooser.ExtensionFilter extFilter = 
-                        new FileChooser.ExtensionFilter("TEXT files (*.txt)", "*.txt");
-                fileChooser.getExtensionFilters().add(extFilter);
-                
-              fileChooser.setTitle("Open Resource File");
-        */
-
-
-        /*
-        JFileChooser fileChooser = new JFileChooser();
-        
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Bestanden", "pdf");
-        fileChooser.addChoosableFileFilter(filter);
-        fileChooser.showOpenDialog(null);
-        
-        String fileName = fileChooser.getSelectedFile().getPath();
-        File f = new File(fileName);
-        
-        if(f.exists() && !f.isDirectory()) { 
-            try {
-                byte[] buff = loadFile(f);
-                opgavePdfBinary = new SerialBlob(buff);
-            } catch (Exception ex) {
-                Logger.getLogger(OefeningenSchermController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
-*/
     }
 
     @FXML
@@ -348,6 +358,7 @@ public class OefeningenSchermController extends AnchorPane {
         laatsteSelectie.setAntwoord(antwoordField.getText());
         //laatsteSelectie.setFeedback(hintField.getText());
         laatsteSelectie.setOpgave(opgavePdfBinary);
+        laatsteSelectie.setHint(hintPdfBinary);
         ob.slaOefeningOp(laatsteSelectie);
         laadOefeningenLijst();
     }
@@ -364,6 +375,7 @@ public class OefeningenSchermController extends AnchorPane {
         {
             naamField.setText("");
             btnOpenOpgave.setDisable(heeftGeenSelectie);
+            btnOpenHint.setDisable(heeftGeenSelectie);
             //btnWijzigOpgave.setDisable(heeftGeenSelectie);
             //btnOpenFeedback.setDisable(heeftGeenSelectie);
             //btnWijzigFeedback.setDisable(heeftGeenSelectie);
