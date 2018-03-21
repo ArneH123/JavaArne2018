@@ -246,37 +246,38 @@ public class OefeningenSchermController extends AnchorPane {
         }
     }
 
-    @FXML
-    private void openOpgave(ActionEvent event)
+    private void openPDFInDefaultViewer(Blob pdf)
     {
-        Blob pdfData = laatsteSelectie.getOpgave();
-        if (pdfData==null)
+        if (pdf==null)
             return;
         
-       // byte[] pdf = laatsteSelectie.getOpgave().getBytes(0, 0);
-        byte [] array;
+        byte[] geheugenBuffer = null;
         try {
-            array = pdfData.getBytes( 1, ( int ) pdfData.length() );
             
             Path windowsTempDir = Paths.get(System.getProperty("java.io.tmpdir"));
-            windowsTempDir = Files.createTempDirectory(windowsTempDir, "dir");
+            windowsTempDir = Files.createTempDirectory(windowsTempDir, "java-");
             Path tmp = Files.createTempFile(windowsTempDir,"openen-",".pdf");
-            
+
             windowsTempDir.toFile().deleteOnExit();
-            tmp.toFile().deleteOnExit();
+            tmp.toFile().deleteOnExit(); // volgorde belangrijk !
             
+            geheugenBuffer = pdf.getBytes( 1, ( int ) pdf.length() );
             
-            //File file = 
             FileOutputStream out = new FileOutputStream( tmp.toFile() );
-            out.write( array );
+            out.write( geheugenBuffer );
             out.close();
             
-                    Desktop.getDesktop().open(tmp.toFile());
-
+            Desktop.getDesktop().open(tmp.toFile());
             
         } catch (Exception ex) {
             Logger.getLogger(OefeningenSchermController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    @FXML
+    private void openOpgave(ActionEvent event)
+    {
+        openPDFInDefaultViewer(laatsteSelectie.getOpgave());
     }
     
     @FXML
@@ -285,7 +286,7 @@ public class OefeningenSchermController extends AnchorPane {
          FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF Files (*.txt)", "*.pdf");
         fc.getExtensionFilters().add(extFilter);
         
-        String userDirectoryString = System.getProperty("user.home") + "\\Desktop";
+        String userDirectoryString = System.getProperty("user.home");
         File userDirectory = new File(userDirectoryString);
         fc.setInitialDirectory(userDirectory);
 

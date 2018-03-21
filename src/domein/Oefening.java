@@ -23,12 +23,13 @@ public class Oefening {
     private int id;
     private String naam;
     private String opgave;
-    private byte[] opgavePDFBlob;
     private String antwoord;
     private double antwoordd;
     private String feedback;
     private boolean isInGebruik = false;
 //    @OneToMany(mappedBy="Groepsbewerking", cascade = CascadeType.PERSIST)
+    private byte[] opgavePDFBlob;
+    private byte[] hintPDFBlob;
     private List<iGroepsBewerking> groepsbewerkingen;
 
     // Copy constructir
