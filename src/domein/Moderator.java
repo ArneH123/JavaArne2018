@@ -34,16 +34,8 @@ public class Moderator {
             oefeningen.add(oefening);
 	}
 
-	public void wijzigOpgaveOefening(int id, String opgave) {
-            oefeningen.get(id).setOpgave(opgave);
-	}
-
 	public void wijzigAntwoord(int id, String antwoord) {
             oefeningen.get(id).setAntwoord(antwoord);
-	}
-
-	public void wijzigFeedback(int id, String feedback) {
-            oefeningen.get(id).setFeedback(feedback);
 	}
 
 }

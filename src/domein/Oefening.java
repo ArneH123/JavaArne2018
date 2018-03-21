@@ -18,10 +18,8 @@ public class Oefening {
     @GeneratedValue
     private int id;
     private String naam;
-    private String opgave;
     private String antwoord;
     private double antwoordd;
-    private String feedback;
     private boolean isInGebruik = false;
 //    @OneToMany(mappedBy="Groepsbewerking", cascade = CascadeType.PERSIST)
     private byte[] opgavePDFBlob;
@@ -32,20 +30,16 @@ public class Oefening {
     public Oefening(Oefening copyOef) {
         //copyOef
         this.naam = copyOef.naam;
-        this.opgave = copyOef.opgave;
         this.antwoord = copyOef.antwoord;
         this.opgavePDFBlob = copyOef.opgavePDFBlob;
         this.hintPDFBlob = copyOef.hintPDFBlob;
-        this.feedback = copyOef.feedback;
         this.isInGebruik = copyOef.isInGebruik;
         this.groepsbewerkingen = copyOef.groepsbewerkingen;
     }
  
     public Oefening(String naam, String opgave, String antwoord, String feedback) {
         this.naam = naam;
-        this.opgave = opgave;
         this.antwoord = antwoord;
-        this.feedback = feedback;
     }
  
     public Oefening(String naam) {
@@ -72,10 +66,6 @@ public class Oefening {
     public String getAntwoord() {
         return antwoord;
     }
-
-    public String getFeedback() {
-        return feedback;
-    }
     
     public boolean getIsInGebruik() {
         return isInGebruik;
@@ -87,10 +77,6 @@ public class Oefening {
     
     public void setNaam(String naam) {
         this.naam = naam;
-    }
-
-    public void setOpgave(String opgave) {
-        this.opgave = opgave;
     }
 
     public void setAntwoord(String antwoord) {
@@ -148,11 +134,6 @@ public class Oefening {
             Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-    }
-    
-    
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
     }
 
     public void setIsInGebruik(boolean isInGebruik) {
