@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -46,22 +48,18 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.sql.rowset.serial.SerialBlob;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JMenu;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class OefeningenSchermController extends AnchorPane {
+
+    final FileChooser fc = new FileChooser();
     private OefeningBeheerder ob;
     private Oefening laatsteSelectie = null;
     private FilteredList<Oefening> filteredList = null;
-    
+    private Stage stage;
     private enum bewerkStatus {
         AANPASBAAR, AANGEPAST, NIETAANPASBAAR, GEENSELECTIE
     }
@@ -96,8 +94,9 @@ public class OefeningenSchermController extends AnchorPane {
     private Button btnOpenHint;
     
     private Blob opgavePdfBinary;
-    public OefeningenSchermController()
+    public OefeningenSchermController(Stage stg)
     {
+        this.stage = stg;
     }
 
     public Parent InitialiseerController(OefeningBeheerder ob)
@@ -106,8 +105,7 @@ public class OefeningenSchermController extends AnchorPane {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("OefeningenScherm.fxml"));
         loader.setController(this);
         try {
-            p = loader.load();
-            return p;
+            return loader.load();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -167,12 +165,17 @@ public class OefeningenSchermController extends AnchorPane {
         naamField.setEditable(aanpasBaar);
         antwoordField.setEditable(aanpasBaar);
         btnOpslaan.setDisable(!aanpasBaar);
+
+        btnWijzigHint.setDisable(!aanpasBaar);
+        btnWijzigOpgave.setDisable(!aanpasBaar);
+        btnOpenHint.setDisable(!aanpasBaar);
         
-    btnOpenOpgave.setDisable(!aanpasBaar);
-    btnWijzigHint.setDisable(!aanpasBaar);
-    btnWijzigOpgave.setDisable(!aanpasBaar);
-    btnOpenHint.setDisable(!aanpasBaar);
+        boolean found = false;
+        if (laatsteSelectie!=null)
+            opgavePdfBinary = laatsteSelectie.getOpgave();
         
+        found = (opgavePdfBinary!=null);
+        btnOpenOpgave.setDisable(!found);
     }
     @FXML
     private void detailCurrent(ActionEvent event) {
@@ -211,8 +214,6 @@ public class OefeningenSchermController extends AnchorPane {
         ob.wisOefening(laatsteSelectie);
         laadOefeningenLijst();
      }
-    final JFrame frame = new JFrame();
-        JFileChooser fc = new JFileChooser();
 
     
     public static byte[] readFully(InputStream stream) throws IOException
@@ -244,10 +245,73 @@ public class OefeningenSchermController extends AnchorPane {
             }
         }
     }
+
+    @FXML
+    private void openOpgave(ActionEvent event)
+    {
+        Blob pdfData = laatsteSelectie.getOpgave();
+        if (pdfData==null)
+            return;
+        
+       // byte[] pdf = laatsteSelectie.getOpgave().getBytes(0, 0);
+        byte [] array;
+        try {
+            array = pdfData.getBytes( 1, ( int ) pdfData.length() );
+            
+            Path windowsTempDir = Paths.get(System.getProperty("java.io.tmpdir"));
+            windowsTempDir = Files.createTempDirectory(windowsTempDir, "dir");
+            Path tmp = Files.createTempFile(windowsTempDir,"openen-",".pdf");
+            
+            windowsTempDir.toFile().deleteOnExit();
+            tmp.toFile().deleteOnExit();
+            
+            
+            //File file = 
+            FileOutputStream out = new FileOutputStream( tmp.toFile() );
+            out.write( array );
+            out.close();
+            
+                    Desktop.getDesktop().open(tmp.toFile());
+
+            
+        } catch (Exception ex) {
+            Logger.getLogger(OefeningenSchermController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     @FXML
     private void wijzigOpgave(ActionEvent event)
     {
+         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF Files (*.txt)", "*.pdf");
+        fc.getExtensionFilters().add(extFilter);
+        
+        String userDirectoryString = System.getProperty("user.home") + "\\Desktop";
+        File userDirectory = new File(userDirectoryString);
+        fc.setInitialDirectory(userDirectory);
+
+        File f = fc.showOpenDialog(this.stage);
+        
+        if (f==null)
+            return;
+
+        if(f.exists() && !f.isDirectory()) { 
+            try {
+                byte[] buff = loadFile(f);
+                opgavePdfBinary = new SerialBlob(buff);
+            } catch (Exception ex) {
+                Logger.getLogger(OefeningenSchermController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        /*
+ FileChooser.ExtensionFilter extFilter = 
+                        new FileChooser.ExtensionFilter("TEXT files (*.txt)", "*.txt");
+                fileChooser.getExtensionFilters().add(extFilter);
+                
+              fileChooser.setTitle("Open Resource File");
+        */
+
+
+        /*
         JFileChooser fileChooser = new JFileChooser();
         
         fileChooser.setAcceptAllFileFilterUsed(false);
@@ -258,7 +322,6 @@ public class OefeningenSchermController extends AnchorPane {
         String fileName = fileChooser.getSelectedFile().getPath();
         File f = new File(fileName);
         
-        Blob pdfBinary;
         if(f.exists() && !f.isDirectory()) { 
             try {
                 byte[] buff = loadFile(f);
@@ -268,6 +331,7 @@ public class OefeningenSchermController extends AnchorPane {
             }
             
         }
+*/
     }
 
     @FXML
@@ -321,6 +385,10 @@ public class OefeningenSchermController extends AnchorPane {
         //opgaveField.setText(laatsteSelectie.getOpgave());
         antwoordField.setText(laatsteSelectie.getAntwoord());
         //hintField.setText(laatsteSelectie.getFeedback());
+        
+        
+        //if (opgavePdfBinary==null)
+        //btnOpenOpgave.setDisable(true);
 
         updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
         
@@ -334,9 +402,10 @@ public class OefeningenSchermController extends AnchorPane {
     }
     
     private void openPdf(){
+        /*
         JButton btnOpenOpgave = new JButton("Open");
         JButton btnOpenFeedback = new JButton("Open");
-        
+        /*
         btnOpenOpgave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e)
@@ -350,8 +419,8 @@ public class OefeningenSchermController extends AnchorPane {
                     ex.printStackTrace();
                 }
             }
-        });  
-        
+        });  */
+        /*
         btnOpenFeedback.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e)
@@ -365,13 +434,9 @@ public class OefeningenSchermController extends AnchorPane {
                     ex.printStackTrace();
                 }
             }
-        });
+        });*/
     }
     
-    private void wijzigPdf(){
-        JButton btnWijzigOpgave = new JButton("Wijzig");
-        JButton btnWijzigFeedback = new JButton("Wijzig");
-    }
     
     private void buildGui() {
         

@@ -1,14 +1,19 @@
 package domein;
 
+import static gui.OefeningenSchermController.loadFile;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.sql.rowset.serial.SerialBlob;
 
 @Entity
 @Table(name = "Oefening")
@@ -18,7 +23,7 @@ public class Oefening {
     private int id;
     private String naam;
     private String opgave;
-    private Blob opgavePDF;
+    private byte[] opgavePDFBlob;
     private String antwoord;
     private double antwoordd;
     private String feedback;
@@ -32,7 +37,7 @@ public class Oefening {
         this.naam = copyOef.naam;
         this.opgave = copyOef.opgave;
         this.antwoord = copyOef.antwoord;
-        this.opgavePDF = copyOef.opgavePDF;
+        this.opgavePDFBlob = copyOef.opgavePDFBlob;
         this.feedback = copyOef.feedback;
         this.isInGebruik = copyOef.isInGebruik;
         this.groepsbewerkingen = copyOef.groepsbewerkingen;
@@ -95,11 +100,31 @@ public class Oefening {
     }
 
     public void setOpgave(Blob opgavePDF) {
-        this.opgavePDF = opgavePDF;
+        
+        try {
+            if (opgavePDF==null)
+                return;
+            
+            int blobLength = (int) opgavePDF.length();  
+            this.opgavePDFBlob = opgavePDF.getBytes(1, blobLength);
+        } catch (SQLException ex) {
+            Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Blob getOpgave() {
-        return this.opgavePDF;
+        try {
+            if (this.opgavePDFBlob==null)
+                return null;
+            
+            Blob opgavePdfBinary = new SerialBlob(this.opgavePDFBlob);
+            return opgavePdfBinary;
+            
+            //return this.opgavePDF;
+        } catch (SQLException ex) {
+            Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
     public void setFeedback(String feedback) {

@@ -6,6 +6,7 @@ import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
 import javax.swing.JFileChooser;
 public class StartUp extends Application
 {
@@ -15,12 +16,12 @@ public class StartUp extends Application
     @Override
    public void start(Stage primaryStage){
     
-      OefeningenSchermController Controller = new OefeningenSchermController();
+      OefeningenSchermController Controller = new OefeningenSchermController(primaryStage);
       Parent AnchorPane = Controller.InitialiseerController(ob);
+      
 
       primaryStage.setScene(new Scene(AnchorPane));
       primaryStage.show();
-
    }
     
     public static void main(String[] args) {
