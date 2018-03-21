@@ -7,11 +7,8 @@ package persistentie;
 
 import domein.Oefening;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
