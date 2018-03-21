@@ -93,8 +93,8 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private Button btnOpenHint;
     
-    private Blob opgavePdfBinary;
-    private Blob hintPdfBinary;
+    private Blob opgavePdfBinary = null;
+    private Blob hintPdfBinary = null;
 
     public OefeningenSchermController(Stage stg)
     {
@@ -156,8 +156,12 @@ public class OefeningenSchermController extends AnchorPane {
         if (updateAlleStijlen)
         {
             naamField.setStyle(stijl);
-            //opgaveField.setStyle(stijl);
             antwoordField.setStyle(stijl);
+            btnOpenOpgave.setStyle(stijl);
+            btnOpenHint.setStyle(stijl);
+            btnWijzigOpgave.setStyle(stijl);
+            btnWijzigHint.setStyle(stijl);
+            //opgaveField.setStyle(stijl);
             //hintField.setStyle(stijl);
         } 
         btnOpslaan.setStyle(stijl);
@@ -168,24 +172,59 @@ public class OefeningenSchermController extends AnchorPane {
         antwoordField.setEditable(aanpasBaar);
         btnOpslaan.setDisable(!aanpasBaar);
 
-        btnWijzigHint.setDisable(!aanpasBaar);
         btnWijzigOpgave.setDisable(!aanpasBaar);
-        btnOpenHint.setDisable(!aanpasBaar);
+        btnWijzigHint.setDisable(!aanpasBaar);
+
+        btnOpenOpgave.setDisable(opgavePdfBinary==null);
+        btnOpenHint.setDisable(hintPdfBinary==null);
+    }
+    
+        //laat details van oefening zien
+    private void laadOefeningDetail() 
+    {
+        laatsteSelectie = oefeningenView.getSelectionModel().getSelectedItem();
+        boolean heeftGeenSelectie = (laatsteSelectie==null);
+
+        btnKopieer.setDisable(heeftGeenSelectie);
         
-        boolean foundOpgave = false;
+        if (heeftGeenSelectie)
+        {
+            naamField.setText("");
+            btnOpenOpgave.setDisable(heeftGeenSelectie);
+            btnWijzigOpgave.setDisable(heeftGeenSelectie);
+            btnOpenHint.setDisable(heeftGeenSelectie);
+            btnWijzigHint.setDisable(heeftGeenSelectie);
+            antwoordField.setText("");
+            
+            btnWis.setDisable(true);
+            
+            opgavePdfBinary = null;
+            hintPdfBinary = null;
+            
+            updateEditeerModus(bewerkStatus.GEENSELECTIE);
+            return;
+        }
+        
+        // wel selectie
+        // laad de gegevens
+
+        boolean isInGebruik = laatsteSelectie.getIsInGebruik();
+        btnWis.setDisable(isInGebruik);
+        
+        naamField.setText(laatsteSelectie.getNaam());
+        antwoordField.setText(laatsteSelectie.getAntwoord());
+        
         if (laatsteSelectie!=null)
             opgavePdfBinary = laatsteSelectie.getOpgave();
 
-        boolean foundHint = false;
         if (laatsteSelectie!=null)
             hintPdfBinary = laatsteSelectie.getHint();
-        
-        foundOpgave = (opgavePdfBinary!=null);
-            btnOpenOpgave.setDisable(!foundOpgave);
 
-        foundHint = (hintPdfBinary!=null);
-            btnOpenHint.setDisable(!foundHint);
+        updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
+        
     }
+
+    
     @FXML
     private void detailCurrent(ActionEvent event) {
           laadOefeningDetail();
@@ -294,9 +333,8 @@ public class OefeningenSchermController extends AnchorPane {
     {
         openPDFInDefaultViewer(laatsteSelectie.getHint());
     }
-
-     @FXML
-    private void wijzigHint(ActionEvent event)
+    
+    private Blob loadPDF()
     {
          FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF Files (*.txt)", "*.pdf");
         fc.getExtensionFilters().add(extFilter);
@@ -308,41 +346,33 @@ public class OefeningenSchermController extends AnchorPane {
         File f = fc.showOpenDialog(this.stage);
         
         if (f==null)
-            return;
+            return null;
 
         if(f.exists() && !f.isDirectory()) { 
             try {
                 byte[] buff = loadFile(f);
-                hintPdfBinary = new SerialBlob(buff);
+                return new SerialBlob(buff);
             } catch (Exception ex) {
                 Logger.getLogger(OefeningenSchermController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return null; // fallback
+    }
+
+    @FXML
+    private void wijzigHint(ActionEvent event)
+    {
+        hintPdfBinary = loadPDF();
+        if (hintPdfBinary!=null)
+            zetGewijzigd(btnWijzigHint);
     }
     
     @FXML
     private void wijzigOpgave(ActionEvent event)
     {
-         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF Files (*.txt)", "*.pdf");
-        fc.getExtensionFilters().add(extFilter);
-        
-        String userDirectoryString = System.getProperty("user.home");
-        File userDirectory = new File(userDirectoryString);
-        fc.setInitialDirectory(userDirectory);
-
-        File f = fc.showOpenDialog(this.stage);
-        
-        if (f==null)
-            return;
-
-        if(f.exists() && !f.isDirectory()) { 
-            try {
-                byte[] buff = loadFile(f);
-                opgavePdfBinary = new SerialBlob(buff);
-            } catch (Exception ex) {
-                Logger.getLogger(OefeningenSchermController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        opgavePdfBinary = loadPDF();
+        if (opgavePdfBinary!=null)
+            zetGewijzigd(btnWijzigOpgave);
     }
 
     @FXML
@@ -355,57 +385,14 @@ public class OefeningenSchermController extends AnchorPane {
         laatsteSelectie.setNaam(naamField.getText());
         //laatsteSelectie.setOpgave(btnWijzigOpgave.);
         //laatsteSelectie.setOpgave(opgaveField.getText());
-        laatsteSelectie.setAntwoord(antwoordField.getText());
         //laatsteSelectie.setFeedback(hintField.getText());
+        laatsteSelectie.setAntwoord(antwoordField.getText());
         laatsteSelectie.setOpgave(opgavePdfBinary);
         laatsteSelectie.setHint(hintPdfBinary);
         ob.slaOefeningOp(laatsteSelectie);
         laadOefeningenLijst();
     }
     
-    //laat details van oefening zien
-    private void laadOefeningDetail() 
-    {
-        laatsteSelectie = oefeningenView.getSelectionModel().getSelectedItem();
-        boolean heeftGeenSelectie = (laatsteSelectie==null);
-
-        btnKopieer.setDisable(heeftGeenSelectie);
-        
-        if (heeftGeenSelectie)
-        {
-            naamField.setText("");
-            btnOpenOpgave.setDisable(heeftGeenSelectie);
-            btnOpenHint.setDisable(heeftGeenSelectie);
-            //btnWijzigOpgave.setDisable(heeftGeenSelectie);
-            //btnOpenFeedback.setDisable(heeftGeenSelectie);
-            //btnWijzigFeedback.setDisable(heeftGeenSelectie);
-            //opgaveField.setText("");
-            antwoordField.setText("");
-            //hintField.setText("");
-            updateEditeerModus(bewerkStatus.GEENSELECTIE);
-            btnWis.setDisable(true);
-            
-            return;
-        }
-        
-        // wel selectie
-        // laad de gegevens
-
-        boolean isInGebruik = laatsteSelectie.getIsInGebruik();
-        btnWis.setDisable(isInGebruik);
-        
-        naamField.setText(laatsteSelectie.getNaam());
-        //opgaveField.setText(laatsteSelectie.getOpgave());
-        antwoordField.setText(laatsteSelectie.getAntwoord());
-        //hintField.setText(laatsteSelectie.getFeedback());
-        
-        
-        //if (opgavePdfBinary==null)
-        //btnOpenOpgave.setDisable(true);
-
-        updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
-        
-    }
 
     private void laadOefeningenLijst()
     {
@@ -413,43 +400,6 @@ public class OefeningenSchermController extends AnchorPane {
         oefeningenView.setItems(filteredList);
         txtLijstZoek.setText("");
     }
-    
-    private void openPdf(){
-        /*
-        JButton btnOpenOpgave = new JButton("Open");
-        JButton btnOpenFeedback = new JButton("Open");
-        /*
-        btnOpenOpgave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e)
-            {
-                try
-                {
-                    Desktop.getDesktop().open(new java.io.File("Oefening_Domino.pdf"));
-                }
-                catch(IOException ex) 
-                {
-                    ex.printStackTrace();
-                }
-            }
-        });  */
-        /*
-        btnOpenFeedback.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e)
-            {
-                try
-                {
-                    Desktop.getDesktop().open(new java.io.File("Oefening_Domino.pdf"));
-                }
-                catch(IOException ex) 
-                {
-                    ex.printStackTrace();
-                }
-            }
-        });*/
-    }
-    
     
     private void buildGui() {
         
@@ -513,7 +463,12 @@ public class OefeningenSchermController extends AnchorPane {
         laadOefeningenLijst();
         laadOefeningDetail(); // Trigger de geen selectie procedure
     }
-    
+    private void zetGewijzigd(Control element)
+    {
+            String stijl = "-fx-border-color: #"+kleuren.get(bewerkStatus.AANGEPAST) +";"; 
+            element.setStyle(stijl);
+            updateEditeerModus(bewerkStatus.AANGEPAST,false);
+    }
     public class OefeningDetailsGewijzigd implements ChangeListener
    {
         private Control source;
@@ -525,10 +480,8 @@ public class OefeningenSchermController extends AnchorPane {
         @Override
         public void changed(ObservableValue observable, Object oldValue, Object newValue) 
         {
-            String stijl = "-fx-border-color: #"+kleuren.get(bewerkStatus.AANGEPAST) +";"; 
-            source.setStyle(stijl);
-            updateEditeerModus(bewerkStatus.AANGEPAST,false);
+            zetGewijzigd(this.source);
         }
-
+ 
   };
 }
