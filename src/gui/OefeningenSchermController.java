@@ -5,8 +5,10 @@
  */
 package gui;
 
+import domein.MaalBewerking;
 import domein.Oefening;
 import domein.OefeningBeheerder;
+import domein.iGroepsBewerking;
 import java.awt.Desktop;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,7 +41,12 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.SelectionMode;
 import javax.sql.rowset.serial.SerialBlob;
 
 public class OefeningenSchermController extends AnchorPane {
@@ -47,7 +54,9 @@ public class OefeningenSchermController extends AnchorPane {
     final FileChooser fc = new FileChooser();
     private OefeningBeheerder ob;
     private Oefening laatsteSelectie = null;
-    private FilteredList<Oefening> filteredList = null;
+    private FilteredList<Oefening> oefeningenLijst = null;
+    private FilteredList<iGroepsBewerking> groepsBewerkingLijst = null;
+    
     private Stage stage;
     private enum bewerkStatus {
         AANPASBAAR, AANGEPAST, NIETAANPASBAAR, GEENSELECTIE
@@ -81,6 +90,9 @@ public class OefeningenSchermController extends AnchorPane {
     private Button btnWijzigOpgave;
     @FXML
     private Button btnOpenHint;
+    @FXML
+    ListView<iGroepsBewerking> iGBView;
+
     
     private Blob opgavePdfBinary = null;
     private Blob hintPdfBinary = null;
@@ -150,6 +162,7 @@ public class OefeningenSchermController extends AnchorPane {
             btnOpenHint.setStyle(stijl);
             btnWijzigOpgave.setStyle(stijl);
             btnWijzigHint.setStyle(stijl);
+            iGBView.setStyle(stijl);
             //opgaveField.setStyle(stijl);
             //hintField.setStyle(stijl);
         } 
@@ -164,8 +177,12 @@ public class OefeningenSchermController extends AnchorPane {
         btnWijzigOpgave.setDisable(!aanpasBaar);
         btnWijzigHint.setDisable(!aanpasBaar);
 
+        iGBView.setDisable(!aanpasBaar);
+
         btnOpenOpgave.setDisable(opgavePdfBinary==null);
         btnOpenHint.setDisable(hintPdfBinary==null);
+        
+
     }
     
         //laat details van oefening zien
@@ -221,7 +238,13 @@ public class OefeningenSchermController extends AnchorPane {
 
     @FXML
     private void nieuweOefening(ActionEvent event) {
-        ob.voegOefeningToe(new Oefening("Nieuwe oefening"));
+        
+        Oefening test = new Oefening("Nieuwe oefening");
+        
+
+        test.setGroepsbewerking(null);
+                
+        ob.voegOefeningToe(test);
         laadOefeningenLijst();
         oefeningenView.getSelectionModel().selectLast();
 
@@ -372,14 +395,12 @@ public class OefeningenSchermController extends AnchorPane {
             return;
 
         laatsteSelectie.setNaam(naamField.getText());
-        //laatsteSelectie.setOpgave(btnWijzigOpgave.);
-        //laatsteSelectie.setOpgave(opgaveField.getText());
-        //laatsteSelectie.setFeedback(hintField.getText());
         laatsteSelectie.setAntwoord(antwoordField.getText());
         laatsteSelectie.setOpgave(opgavePdfBinary);
         laatsteSelectie.setHint(hintPdfBinary);
-        
-        laatsteSelectie.setGroepsbewerking(null);
+
+        ObservableList<iGroepsBewerking> selectedItems =  iGBView.getSelectionModel().getSelectedItems();
+        laatsteSelectie.setGroepsbewerking(selectedItems);
         
         ob.slaOefeningOp(laatsteSelectie);
         laadOefeningenLijst();
@@ -388,9 +409,15 @@ public class OefeningenSchermController extends AnchorPane {
 
     private void laadOefeningenLijst()
     {
-        filteredList = new FilteredList<>(ob.geefOefeningenAsLijst());
-        oefeningenView.setItems(filteredList);
+        oefeningenLijst = new FilteredList<>(ob.geefOefeningenAsLijst());
+        oefeningenView.setItems(oefeningenLijst);
         txtLijstZoek.setText("");
+    }
+    
+    private void laadGroepsBewerkingen()
+    {
+//        groepsBewerkingLijst = new FilteredList<iGroepsBewerking>(list);
+        iGBView.setItems(groepsBewerkingLijst);
     }
     
     private void buildGui() {
@@ -400,7 +427,6 @@ public class OefeningenSchermController extends AnchorPane {
             System.out.print("OB niet correct ingeladen");
         if (oefeningenView==null)
             System.out.print("FXML niet correct ingeladen");
-
         
         oefeningenView.setCellFactory(param -> new ListCell<Oefening>() {
             @Override
@@ -439,19 +465,38 @@ public class OefeningenSchermController extends AnchorPane {
             }
         });
         
+        iGBView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        iGBView.setCellFactory(param -> new ListCell<iGroepsBewerking>() {
+            @Override
+            protected void updateItem(iGroepsBewerking item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null ) {
+                    setText(null);
+                } else {
+                    String text = item.geefBewerkingToString();
+                    setText(text);
+                }
+            } 
+            
+        });
+
+        
         //implementeert van listener, is de filter functie voor oefeningen
         txtLijstZoek.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            filteredList.setPredicate( data -> {
+            oefeningenLijst.setPredicate( data -> {
                 return data.getNaam().toLowerCase().contains(newValue.toLowerCase());
                 });
         });
         
+       
         //roept oefeningDetailsGewijzigd aan om wijzigingen op te slaan
         naamField.textProperty().addListener(new OefeningDetailsGewijzigd(naamField));
         //opgaveField.textProperty().addListener(new OefeningDetailsGewijzigd(opgaveField));
         antwoordField.textProperty().addListener(new OefeningDetailsGewijzigd(antwoordField));
         //hintField.textProperty().addListener(new OefeningDetailsGewijzigd(hintField));
-            
+        
+        laadGroepsBewerkingen();
+                
         laadOefeningenLijst();
         laadOefeningDetail(); // Trigger de geen selectie procedure
     }
