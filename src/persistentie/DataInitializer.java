@@ -43,8 +43,8 @@ public class DataInitializer {
         Oefening o7 = new Oefening("Oefening sinus AB","Wat is sinus 90°?", "1", "één");
         Oefening o8 = new Oefening("Oefening cosinus", "Wat is de cosinus van 180°?","-1","Negatief getal");
         Oefening o9 = new Oefening("Oefening tangens","Wat is de tangens van 45°?","1","één");
-        Oefening o10 = new Oefening("Oefening combinatoriek (igb = in gebruik)","Wat is de kans dat we slagen voor project?", "50%", "Aantal leden van de groep");
-        Oefening o11 = new Oefening("Oefening AB statistiek - igb","blabla", "blabla", "blabla");
+        Oefening o10 = new Oefening("XXX - Oefening combinatoriek","Wat is de kans dat we slagen voor project?", "50%", "Aantal leden van de groep");
+        Oefening o11 = new Oefening("XXX - Oefening AB statistiek","blabla", "blabla", "blabla");
         
         o10.setIsInGebruik(true);
         o11.setIsInGebruik(true);

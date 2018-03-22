@@ -8,18 +8,14 @@ package domein;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-/**
- *
- * @author Arne
- */
 public abstract class iGroepsBewerking {
 
     public static ObservableList<iGroepsBewerking> beschikbareBewerkingen = FXCollections.observableArrayList();
     public static int currectId;
     static {
-           beschikbareBewerkingen.add(new MaalBewerking("Doe maar maal", 12));
-           beschikbareBewerkingen.add(new MaalBewerking("Doe maar gedeeld door", 50));
-           beschikbareBewerkingen.add(new MaalBewerking("Maal 50 gedeeld door", 50));
+           beschikbareBewerkingen.add(new MaalBewerking("Doe maal 12", 12));
+           beschikbareBewerkingen.add(new MaalBewerking("Doe maal 50", 50));
+           beschikbareBewerkingen.add(new MaalBewerking("Doe maal 5", 5));
     }
     
     abstract String geefBewerkingToString();

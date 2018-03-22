@@ -5,7 +5,6 @@
  */
 package gui;
 
-import domein.MaalBewerking;
 import domein.Oefening;
 import domein.OefeningBeheerder;
 import domein.iGroepsBewerking;
@@ -41,11 +40,7 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
 import javax.sql.rowset.serial.SerialBlob;
