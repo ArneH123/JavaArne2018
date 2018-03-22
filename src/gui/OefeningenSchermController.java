@@ -39,6 +39,7 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Set;
 import javax.sql.rowset.serial.SerialBlob;
 
 public class OefeningenSchermController extends AnchorPane {
@@ -377,6 +378,9 @@ public class OefeningenSchermController extends AnchorPane {
         laatsteSelectie.setAntwoord(antwoordField.getText());
         laatsteSelectie.setOpgave(opgavePdfBinary);
         laatsteSelectie.setHint(hintPdfBinary);
+        
+        laatsteSelectie.setGroepsbewerking(null);
+        
         ob.slaOefeningOp(laatsteSelectie);
         laadOefeningenLijst();
     }

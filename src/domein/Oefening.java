@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,10 +23,12 @@ public class Oefening {
     private String antwoord;
     private double antwoordd;
     private boolean isInGebruik = false;
-//    @OneToMany(mappedBy="Groepsbewerking", cascade = CascadeType.PERSIST)
+
     private byte[] opgavePDFBlob;
     private byte[] hintPDFBlob;
-    private List<iGroepsBewerking> groepsbewerkingen;
+    
+    @ElementCollection 
+    private List<Integer> groepsbewerkingen = FXCollections.observableArrayList();
 
     // Copy constructir
     public Oefening(Oefening copyOef) {
@@ -72,7 +76,7 @@ public class Oefening {
     }
 
     public List<iGroepsBewerking> getGroepsbewerking() {
-        return groepsbewerkingen;
+        return null;//groepsbewerkingen;
     }
     
     public void setNaam(String naam) {
@@ -141,7 +145,9 @@ public class Oefening {
     }
 
     public void setGroepsbewerking(List<iGroepsBewerking> groepsbewerkingen) {
-        this.groepsbewerkingen = groepsbewerkingen;
+        //this.groepsbewerkingen = groepsbewerkingen;
+        this.groepsbewerkingen.add(13);
+        this.groepsbewerkingen.add(25);
     }    
 
     public String toonOverzicht() {
