@@ -5,11 +5,25 @@
  */
 package domein;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  *
  * @author Arne
  */
-public interface iGroepsBewerking {
-    String geefBewerkingToString();
-    boolean uitkomstIsGeldig(Oefening oefening, double getal);
+public abstract class iGroepsBewerking {
+
+    public static ObservableList<iGroepsBewerking> beschikbareBewerkingen = FXCollections.observableArrayList();
+    public static int currectId;
+    static {
+           beschikbareBewerkingen.add(new MaalBewerking("Doe maar maal", 12));
+           beschikbareBewerkingen.add(new MaalBewerking("Doe maar gedeeld door", 50));
+           beschikbareBewerkingen.add(new MaalBewerking("Maal 50 gedeeld door", 50));
+    }
+    
+    abstract String geefBewerkingToString();
+    public abstract String geefNaam();
+    public abstract int haalID();
+    abstract boolean uitkomstIsGeldig(Oefening oefening, double getal);
 }

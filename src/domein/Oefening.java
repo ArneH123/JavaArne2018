@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -76,7 +77,12 @@ public class Oefening {
     }
 
     public List<iGroepsBewerking> getGroepsbewerking() {
-        return null;//groepsbewerkingen;
+       ObservableList<iGroepsBewerking> ret = FXCollections.observableArrayList();
+       
+         for (Integer element : groepsbewerkingen)
+             ret.add(iGroepsBewerking.beschikbareBewerkingen.get(element));
+         
+         return ret;
     }
     
     public void setNaam(String naam) {
@@ -145,11 +151,14 @@ public class Oefening {
     }
 
     public void setGroepsbewerking(List<iGroepsBewerking> groepsbewerkingen) {
-        //this.groepsbewerkingen = groepsbewerkingen;
-        this.groepsbewerkingen.add(13);
-        this.groepsbewerkingen.add(25);
-    }    
-
+        if (groepsbewerkingen==null)
+            return;
+        
+        this.groepsbewerkingen.clear();
+        for (iGroepsBewerking element : groepsbewerkingen)
+            this.groepsbewerkingen.add(element.haalID());
+    }
+    
     public String toonOverzicht() {
         return null;
     }
@@ -157,6 +166,4 @@ public class Oefening {
     public double getAntwoordd() {
         return antwoordd;
     }
-    
-    
 }

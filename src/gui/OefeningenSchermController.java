@@ -41,6 +41,7 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class OefeningenSchermController extends AnchorPane {
     private OefeningBeheerder ob;
     private Oefening laatsteSelectie = null;
     private FilteredList<Oefening> oefeningenLijst = null;
-    private FilteredList<iGroepsBewerking> groepsBewerkingLijst = null;
+    private FilteredList<iGroepsBewerking> groepsBewerkingLijst = null; // als we ooit moeten filteren
     
     private Stage stage;
     private enum bewerkStatus {
@@ -225,6 +226,12 @@ public class OefeningenSchermController extends AnchorPane {
 
         if (laatsteSelectie!=null)
             hintPdfBinary = laatsteSelectie.getHint();
+
+        // selecteer actief
+        iGBView.getSelectionModel().clearSelection();
+        List<iGroepsBewerking> selectie = laatsteSelectie.getGroepsbewerking();
+        for (iGroepsBewerking element : selectie)
+             iGBView.getSelectionModel().select(element);
 
         updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
         
@@ -416,7 +423,8 @@ public class OefeningenSchermController extends AnchorPane {
     
     private void laadGroepsBewerkingen()
     {
-//        groepsBewerkingLijst = new FilteredList<iGroepsBewerking>(list);
+        // vul volledig
+        groepsBewerkingLijst = new FilteredList<iGroepsBewerking>(iGroepsBewerking.beschikbareBewerkingen);
         iGBView.setItems(groepsBewerkingLijst);
     }
     
@@ -473,14 +481,19 @@ public class OefeningenSchermController extends AnchorPane {
                 if (empty || item == null ) {
                     setText(null);
                 } else {
-                    String text = item.geefBewerkingToString();
+                    String text = item.geefNaam();
                     setText(text);
                 }
             } 
             
         });
-
         
+        iGBView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<iGroepsBewerking>() {
+            @Override
+            public void changed(ObservableValue<? extends iGroepsBewerking> observable, iGroepsBewerking oldValue, iGroepsBewerking newValue) {
+                        zetGewijzigd(iGBView);
+            }
+        });
         //implementeert van listener, is de filter functie voor oefeningen
         txtLijstZoek.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             oefeningenLijst.setPredicate( data -> {
