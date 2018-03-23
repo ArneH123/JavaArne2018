@@ -34,17 +34,17 @@ public class DataInitializer {
     
     private static void initializeOefeningen(EntityManager em){
         List<Oefening> oefeningen = new ArrayList();
-        Oefening o1 = new Oefening("Oefening wortels AB", "Wat is de vierkantswortel van 4?", "2", "De helft");
-        Oefening o2 = new Oefening("Oefening breuken","Wat is 8/2?", "4", "Het dubbele");
-        Oefening o3 = new Oefening("Oefening vermenigvuldigen","Wat is 4 *4?", "16", "4 + 4 + 4 + 4");
-        Oefening o4 = new Oefening("Oefening deling","Wat is 20 gedeeld door 10?", "2", "Doe de 0 weg");
-        Oefening o5 = new Oefening("Oefening machten", "Wat is 5²?","25","De helft van 50");
-        Oefening o6 = new Oefening("Oefening pythagoras","Geldt de stelling van Pythagoras voor driehoeken of vierkanten","driehoeken","som 180°");
-        Oefening o7 = new Oefening("Oefening sinus AB","Wat is sinus 90°?", "1", "één");
-        Oefening o8 = new Oefening("Oefening cosinus", "Wat is de cosinus van 180°?","-1","Negatief getal");
-        Oefening o9 = new Oefening("Oefening tangens","Wat is de tangens van 45°?","1","één");
-        Oefening o10 = new Oefening("XXX - Oefening combinatoriek","Wat is de kans dat we slagen voor project?", "50%", "Aantal leden van de groep");
-        Oefening o11 = new Oefening("XXX - Oefening AB statistiek","blabla", "blabla", "blabla");
+        Oefening o1 = new Oefening("Oefening wortels AB", "2");
+        Oefening o2 = new Oefening("Oefening breuken", "4");
+        Oefening o3 = new Oefening("Oefening vermenigvuldigen", "16");
+        Oefening o4 = new Oefening("Oefening deling", "2");
+        Oefening o5 = new Oefening("Oefening machten", "25");
+        Oefening o6 = new Oefening("Oefening pythagoras", "driehoeken");
+        Oefening o7 = new Oefening("Oefening sinus AB", "1");
+        Oefening o8 = new Oefening("Oefening cosinus", "-1");
+        Oefening o9 = new Oefening("Oefening tangens", "1");
+        Oefening o10 = new Oefening("XXX - Oefening combinatoriek", "50%");
+        Oefening o11 = new Oefening("XXX - Oefening AB statistiek", "blabla");
         
         o10.setIsInGebruik(true);
         o11.setIsInGebruik(true);

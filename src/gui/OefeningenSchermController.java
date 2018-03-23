@@ -7,7 +7,7 @@ package gui;
 
 import domein.Oefening;
 import domein.OefeningBeheerder;
-import domein.iGroepsBewerking;
+import domein.IGroepsBewerking;
 import java.awt.Desktop;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -51,7 +51,7 @@ public class OefeningenSchermController extends AnchorPane {
     private OefeningBeheerder ob;
     private Oefening laatsteSelectie = null;
     private FilteredList<Oefening> oefeningenLijst = null;
-    private FilteredList<iGroepsBewerking> groepsBewerkingLijst = null; // als we ooit moeten filteren
+    private FilteredList<IGroepsBewerking> groepsBewerkingLijst = null; // als we ooit moeten filteren
     
     private Stage stage;
     private enum bewerkStatus {
@@ -87,7 +87,7 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private Button btnOpenHint;
     @FXML
-    ListView<iGroepsBewerking> iGBView;
+    ListView<IGroepsBewerking> iGBView;
 
     
     private Blob opgavePdfBinary = null;
@@ -224,8 +224,8 @@ public class OefeningenSchermController extends AnchorPane {
 
         // selecteer actief
         iGBView.getSelectionModel().clearSelection();
-        List<iGroepsBewerking> selectie = laatsteSelectie.getGroepsbewerking();
-        for (iGroepsBewerking element : selectie)
+        List<IGroepsBewerking> selectie = laatsteSelectie.getGroepsbewerking();
+        for (IGroepsBewerking element : selectie)
              iGBView.getSelectionModel().select(element);
 
         updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
@@ -401,7 +401,7 @@ public class OefeningenSchermController extends AnchorPane {
         laatsteSelectie.setOpgave(opgavePdfBinary);
         laatsteSelectie.setHint(hintPdfBinary);
 
-        ObservableList<iGroepsBewerking> selectedItems =  iGBView.getSelectionModel().getSelectedItems();
+        ObservableList<IGroepsBewerking> selectedItems =  iGBView.getSelectionModel().getSelectedItems();
         laatsteSelectie.setGroepsbewerking(selectedItems);
         
         ob.slaOefeningOp(laatsteSelectie);
@@ -419,7 +419,7 @@ public class OefeningenSchermController extends AnchorPane {
     private void laadGroepsBewerkingen()
     {
         // vul volledig
-        groepsBewerkingLijst = new FilteredList<iGroepsBewerking>(iGroepsBewerking.beschikbareBewerkingen);
+        groepsBewerkingLijst = new FilteredList<IGroepsBewerking>(IGroepsBewerking.beschikbareBewerkingen);
         iGBView.setItems(groepsBewerkingLijst);
     }
     
@@ -469,9 +469,9 @@ public class OefeningenSchermController extends AnchorPane {
         });
         
         iGBView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        iGBView.setCellFactory(param -> new ListCell<iGroepsBewerking>() {
+        iGBView.setCellFactory(param -> new ListCell<IGroepsBewerking>() {
             @Override
-            protected void updateItem(iGroepsBewerking item, boolean empty) {
+            protected void updateItem(IGroepsBewerking item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null ) {
                     setText(null);
@@ -483,9 +483,9 @@ public class OefeningenSchermController extends AnchorPane {
             
         });
         
-        iGBView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<iGroepsBewerking>() {
+        iGBView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<IGroepsBewerking>() {
             @Override
-            public void changed(ObservableValue<? extends iGroepsBewerking> observable, iGroepsBewerking oldValue, iGroepsBewerking newValue) {
+            public void changed(ObservableValue<? extends IGroepsBewerking> observable, IGroepsBewerking oldValue, IGroepsBewerking newValue) {
                         zetGewijzigd(iGBView);
             }
         });

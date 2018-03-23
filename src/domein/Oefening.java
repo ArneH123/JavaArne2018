@@ -11,6 +11,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -28,8 +29,10 @@ public class Oefening {
     private byte[] opgavePDFBlob;
     private byte[] hintPDFBlob;
     
+    @OneToMany
+    
     @ElementCollection 
-    private List<Integer> groepsbewerkingen = FXCollections.observableArrayList();
+    private List<IGroepsBewerking> groepsbewerkingen = FXCollections.observableArrayList();
 
     // Copy constructir
     public Oefening(Oefening copyOef) {
@@ -42,7 +45,7 @@ public class Oefening {
         this.groepsbewerkingen = copyOef.groepsbewerkingen;
     }
  
-    public Oefening(String naam, String opgave, String antwoord, String feedback) {
+    public Oefening(String naam, String antwoord) {
         this.naam = naam;
         this.antwoord = antwoord;
     }
@@ -61,12 +64,6 @@ public class Oefening {
     public String getNaam() {
         return naam;
     }
-    
-    /*
-    public String getOpgave() {
-        return opgave;
-    }
-    */
 
     public String getAntwoord() {
         return antwoord;
@@ -76,11 +73,11 @@ public class Oefening {
         return isInGebruik;
     }
 
-    public List<iGroepsBewerking> getGroepsbewerking() {
-       ObservableList<iGroepsBewerking> ret = FXCollections.observableArrayList();
+    public List<IGroepsBewerking> getGroepsbewerking() {
+       ObservableList<IGroepsBewerking> ret = FXCollections.observableArrayList();
        
-         for (Integer element : groepsbewerkingen)
-             ret.add(iGroepsBewerking.beschikbareBewerkingen.get(element));
+         for (IGroepsBewerking element : groepsbewerkingen)
+             ret.add(IGroepsBewerking.beschikbareBewerkingen.get(element));
          
          return ret;
     }
@@ -150,17 +147,13 @@ public class Oefening {
         this.isInGebruik = isInGebruik;
     }
 
-    public void setGroepsbewerking(List<iGroepsBewerking> groepsbewerkingen) {
+    public void setGroepsbewerking(List<IGroepsBewerking> groepsbewerkingen) {
         if (groepsbewerkingen==null)
             return;
         
         this.groepsbewerkingen.clear();
-        for (iGroepsBewerking element : groepsbewerkingen)
+        for (IGroepsBewerking element : groepsbewerkingen)
             this.groepsbewerkingen.add(element.haalID());
-    }
-    
-    public String toonOverzicht() {
-        return null;
     }
 
     public double getAntwoordd() {

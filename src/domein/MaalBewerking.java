@@ -9,7 +9,7 @@ package domein;
  *
  * @author Arne
  */
-public class MaalBewerking extends iGroepsBewerking{
+public class MaalBewerking extends IGroepsBewerking{
     
     private double uitkomst;
     private Oefening oefening;
@@ -18,8 +18,8 @@ public class MaalBewerking extends iGroepsBewerking{
     private int id;
     
     public MaalBewerking(String oefening, double getal) {
-        id = iGroepsBewerking.currectId;
-        iGroepsBewerking.currectId++;
+        id = IGroepsBewerking.currectId;
+        IGroepsBewerking.currectId++;
 
        this.naam = oefening;
        this.getal = getal;

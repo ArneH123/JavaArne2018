@@ -6,8 +6,7 @@ import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.FileChooser;
-import javax.swing.JFileChooser;
+
 public class StartUp extends Application
 {
     

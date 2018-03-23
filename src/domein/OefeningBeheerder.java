@@ -1,9 +1,6 @@
 package domein;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.collections.ObservableList;
-import persistentie.OefeningMapper;
 import persistentie.PersistentieController;
 
 public class OefeningBeheerder {
