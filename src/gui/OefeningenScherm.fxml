@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,9 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="897.0" prefWidth="1249.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="900.0" prefWidth="1249.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER" layoutX="-1.0" layoutY="65.0" prefHeight="829.0" prefWidth="484.0">
+      <VBox alignment="CENTER" layoutX="-1.0" layoutY="-26.0" prefHeight="920.0" prefWidth="484.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" text="Oefeningen">
                <font>
@@ -31,11 +30,11 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </TextField>
-            <ListView fx:id="oefeningenView" prefHeight="591.0" prefWidth="464.0">
+            <ListView fx:id="oefeningenView" prefHeight="597.0" prefWidth="464.0">
                <VBox.margin>
                   <Insets />
                </VBox.margin></ListView>
-            <HBox alignment="CENTER" prefHeight="82.0" prefWidth="464.0">
+            <HBox alignment="CENTER" prefHeight="93.0" prefWidth="464.0">
                <children>
                   <Button fx:id="btnNieuw" mnemonicParsing="false" onAction="#nieuweOefening" prefHeight="57.0" prefWidth="125.0" text="Nieuw">
                      <HBox.margin>
@@ -70,7 +69,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <VBox alignment="CENTER" layoutX="594.0" layoutY="46.0" prefHeight="842.0" prefWidth="626.0">
+      <VBox alignment="CENTER" layoutX="594.0" layoutY="56.0" prefHeight="832.0" prefWidth="626.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" text="Details">
                <font>
@@ -178,23 +177,10 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <MenuBar layoutX="-1.0" layoutY="-2.0" prefHeight="33.0" prefWidth="1249.0">
+      <MenuBar layoutX="-1.0" layoutY="2.0" prefHeight="43.0" prefWidth="1249.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
+          <Menu mnemonicParsing="false" text="Oefening" />
+          <Menu mnemonicParsing="false" text="BOB" />
         </menus>
       </MenuBar>
    </children>
