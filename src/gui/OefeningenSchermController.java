@@ -5,9 +5,9 @@
  */
 package gui;
 
+import domein.DomeinController;
 import domein.MaalBewerking;
 import domein.Oefening;
-import domein.OefeningBeheerder;
 import domein.IGroepsBewerking;
 import java.awt.Desktop;
 import java.io.ByteArrayOutputStream;
@@ -49,7 +49,7 @@ import javax.sql.rowset.serial.SerialBlob;
 public class OefeningenSchermController extends AnchorPane {
 
     final FileChooser fc = new FileChooser();
-    private OefeningBeheerder ob;
+    private DomeinController dc;
     private Oefening laatsteSelectie = null;
     private FilteredList<Oefening> oefeningenLijst = null;
     private FilteredList<IGroepsBewerking> groepsBewerkingLijst = null; // als we ooit moeten filteren
@@ -99,9 +99,9 @@ public class OefeningenSchermController extends AnchorPane {
         this.stage = stg;
     }
 
-    public Parent InitialiseerController(OefeningBeheerder ob)
+    public Parent InitialiseerController(DomeinController ob)
     {
-        this.ob = ob;
+        this.dc = ob;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("OefeningenScherm.fxml"));
         loader.setController(this);
         try {
@@ -248,7 +248,7 @@ public class OefeningenSchermController extends AnchorPane {
 
         test.setGroepsbewerking(null);
                 
-        ob.voegOefeningToe(test);
+        dc.voegOefeningToe(test);
         laadOefeningenLijst();
         oefeningenView.getSelectionModel().selectLast();
 
@@ -263,7 +263,7 @@ public class OefeningenSchermController extends AnchorPane {
         Oefening kopie = new Oefening(laatsteSelectie);
         kopie.setIsInGebruik(false); // een kopie kan nog nooit in gebruik zijn bij aanmaak
         
-        ob.voegOefeningToe(kopie);
+        dc.voegOefeningToe(kopie);
         laadOefeningenLijst();
         oefeningenView.getSelectionModel().selectLast();
     }
@@ -275,7 +275,7 @@ public class OefeningenSchermController extends AnchorPane {
         if (laatsteSelectie==null)
             return;
 
-        ob.wisOefening(laatsteSelectie);
+        dc.wisOefening(laatsteSelectie);
         laadOefeningenLijst();
      }
 
@@ -409,14 +409,14 @@ public class OefeningenSchermController extends AnchorPane {
         ObservableList<IGroepsBewerking> selectedItems =  iGBView.getSelectionModel().getSelectedItems();
         laatsteSelectie.setGroepsbewerking(selectedItems);
         
-        ob.slaOefeningOp(laatsteSelectie);
+        dc.slaOefeningOp(laatsteSelectie);
         laadOefeningenLijst();
     }
     
 
     private void laadOefeningenLijst()
     {
-        oefeningenLijst = new FilteredList<>(ob.geefOefeningenAsLijst());
+        oefeningenLijst = new FilteredList<>(dc.geefOefeningenAsLijst());
         oefeningenView.setItems(oefeningenLijst);
         txtLijstZoek.setText("");
     }
@@ -431,7 +431,7 @@ public class OefeningenSchermController extends AnchorPane {
     private void buildGui() {
         
         // Debug - to be removed achteraf
-        if (ob==null)
+        if (dc==null)
             System.out.print("OB niet correct ingeladen");
         if (oefeningenView==null)
             System.out.print("FXML niet correct ingeladen");

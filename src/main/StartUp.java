@@ -1,5 +1,5 @@
 package main;
-import domein.OefeningBeheerder;
+import domein.DomeinController;
 import gui.OefeningenSchermController;
 import javafx.stage.Stage;
 import javafx.application.Application;
@@ -9,14 +9,13 @@ import javafx.scene.Scene;
 
 public class StartUp extends Application
 {
-    
-    private OefeningBeheerder ob = new OefeningBeheerder();
+    private DomeinController dc = new DomeinController();
            
     @Override
    public void start(Stage primaryStage){
     
       OefeningenSchermController Controller = new OefeningenSchermController(primaryStage);
-      Parent AnchorPane = Controller.InitialiseerController(ob);
+      Parent AnchorPane = Controller.InitialiseerController(dc);
       
 
       primaryStage.setScene(new Scene(AnchorPane));
