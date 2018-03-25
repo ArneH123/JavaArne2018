@@ -5,9 +5,10 @@
  */
 package gui;
 
+import domein.MaalBewerking;
 import domein.Oefening;
 import domein.OefeningBeheerder;
-import domein.iGroepsBewerking;
+import domein.IGroepsBewerking;
 import java.awt.Desktop;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -51,7 +52,7 @@ public class OefeningenSchermController extends AnchorPane {
     private OefeningBeheerder ob;
     private Oefening laatsteSelectie = null;
     private FilteredList<Oefening> oefeningenLijst = null;
-    private FilteredList<iGroepsBewerking> groepsBewerkingLijst = null; // als we ooit moeten filteren
+    private FilteredList<IGroepsBewerking> groepsBewerkingLijst = null; // als we ooit moeten filteren
     
     private Stage stage;
     private enum bewerkStatus {
@@ -87,7 +88,7 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private Button btnOpenHint;
     @FXML
-    ListView<iGroepsBewerking> iGBView;
+    ListView<IGroepsBewerking> iGBView;
 
     
     private Blob opgavePdfBinary = null;
@@ -139,6 +140,7 @@ public class OefeningenSchermController extends AnchorPane {
         updateEditeerModus(status,true);
     }
     
+    //past de kleuren aan van de vakken
     private void updateEditeerModus(bewerkStatus status, boolean updateAlleStijlen)
     {
         // later aan te vullen door achtergroundkleur ? (of toch gewoon setDisable gebruiken (lelkijk))
@@ -224,8 +226,8 @@ public class OefeningenSchermController extends AnchorPane {
 
         // selecteer actief
         iGBView.getSelectionModel().clearSelection();
-        List<iGroepsBewerking> selectie = laatsteSelectie.getGroepsbewerking();
-        for (iGroepsBewerking element : selectie)
+        List<IGroepsBewerking> selectie = laatsteSelectie.getGroepsbewerking();
+        for (IGroepsBewerking element : selectie)
              iGBView.getSelectionModel().select(element);
 
         updateEditeerModus( ( isInGebruik) ? bewerkStatus.NIETAANPASBAAR : bewerkStatus.AANPASBAAR);
@@ -277,7 +279,7 @@ public class OefeningenSchermController extends AnchorPane {
         laadOefeningenLijst();
      }
 
-    
+    //leest de bestanden
     public static byte[] readFully(InputStream stream) throws IOException
     {
         byte[] buffer = new byte[8192];
@@ -291,6 +293,7 @@ public class OefeningenSchermController extends AnchorPane {
         return baos.toByteArray();
     }
         
+    //laad de bestanden
     public static byte[] loadFile(File sourcePath) throws IOException
     {
         InputStream inputStream = null;
@@ -308,6 +311,7 @@ public class OefeningenSchermController extends AnchorPane {
         }
     }
 
+    //laat de pdf verschijnen in een apart scherm
     private void openPDFInDefaultViewer(Blob pdf)
     {
         if (pdf==null)
@@ -348,6 +352,7 @@ public class OefeningenSchermController extends AnchorPane {
         openPDFInDefaultViewer(laatsteSelectie.getHint());
     }
     
+    //laad het pdf bestand
     private Blob loadPDF()
     {
          FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF Files (*.txt)", "*.pdf");
@@ -401,7 +406,7 @@ public class OefeningenSchermController extends AnchorPane {
         laatsteSelectie.setOpgave(opgavePdfBinary);
         laatsteSelectie.setHint(hintPdfBinary);
 
-        ObservableList<iGroepsBewerking> selectedItems =  iGBView.getSelectionModel().getSelectedItems();
+        ObservableList<IGroepsBewerking> selectedItems =  iGBView.getSelectionModel().getSelectedItems();
         laatsteSelectie.setGroepsbewerking(selectedItems);
         
         ob.slaOefeningOp(laatsteSelectie);
@@ -419,7 +424,7 @@ public class OefeningenSchermController extends AnchorPane {
     private void laadGroepsBewerkingen()
     {
         // vul volledig
-        groepsBewerkingLijst = new FilteredList<iGroepsBewerking>(iGroepsBewerking.beschikbareBewerkingen);
+        groepsBewerkingLijst = new FilteredList<IGroepsBewerking>(IGroepsBewerking.beschikbareBewerkingen);
         iGBView.setItems(groepsBewerkingLijst);
     }
     
@@ -469,9 +474,9 @@ public class OefeningenSchermController extends AnchorPane {
         });
         
         iGBView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        iGBView.setCellFactory(param -> new ListCell<iGroepsBewerking>() {
+        iGBView.setCellFactory(param -> new ListCell<IGroepsBewerking>() {
             @Override
-            protected void updateItem(iGroepsBewerking item, boolean empty) {
+            protected void updateItem(IGroepsBewerking item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null ) {
                     setText(null);
@@ -483,39 +488,39 @@ public class OefeningenSchermController extends AnchorPane {
             
         });
         
-        iGBView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<iGroepsBewerking>() {
+        iGBView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<IGroepsBewerking>() {
             @Override
-            public void changed(ObservableValue<? extends iGroepsBewerking> observable, iGroepsBewerking oldValue, iGroepsBewerking newValue) {
+            public void changed(ObservableValue<? extends IGroepsBewerking> observable, IGroepsBewerking oldValue, IGroepsBewerking newValue) {
                         zetGewijzigd(iGBView);
             }
         });
+        
         //implementeert van listener, is de filter functie voor oefeningen
         txtLijstZoek.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             oefeningenLijst.setPredicate( data -> {
                 return data.getNaam().toLowerCase().contains(newValue.toLowerCase());
                 });
         });
-        
        
         //roept oefeningDetailsGewijzigd aan om wijzigingen op te slaan
         naamField.textProperty().addListener(new OefeningDetailsGewijzigd(naamField));
-        //opgaveField.textProperty().addListener(new OefeningDetailsGewijzigd(opgaveField));
         antwoordField.textProperty().addListener(new OefeningDetailsGewijzigd(antwoordField));
-        //hintField.textProperty().addListener(new OefeningDetailsGewijzigd(hintField));
         
         laadGroepsBewerkingen();
                 
         laadOefeningenLijst();
         laadOefeningDetail(); // Trigger de geen selectie procedure
     }
+    
     private void zetGewijzigd(Control element)
     {
-            String stijl = "-fx-border-color: #"+kleuren.get(bewerkStatus.AANGEPAST) +";"; 
-            element.setStyle(stijl);
-            updateEditeerModus(bewerkStatus.AANGEPAST,false);
+        String stijl = "-fx-border-color: #"+kleuren.get(bewerkStatus.AANGEPAST) +";"; 
+        element.setStyle(stijl);
+        updateEditeerModus(bewerkStatus.AANGEPAST,false);
     }
+    
     public class OefeningDetailsGewijzigd implements ChangeListener
-   {
+    {
         private Control source;
         public OefeningDetailsGewijzigd(Control source) {
             this.source = source;

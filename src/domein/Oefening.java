@@ -11,6 +11,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
 import javax.persistence.Table;
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -28,6 +29,8 @@ public class Oefening {
     private byte[] opgavePDFBlob;
     private byte[] hintPDFBlob;
     
+
+
     @ElementCollection 
     private List<Integer> groepsbewerkingen = FXCollections.observableArrayList();
 
@@ -76,11 +79,11 @@ public class Oefening {
         return isInGebruik;
     }
 
-    public List<iGroepsBewerking> getGroepsbewerking() {
-       ObservableList<iGroepsBewerking> ret = FXCollections.observableArrayList();
+    public List<IGroepsBewerking> getGroepsbewerking() {
+       ObservableList<IGroepsBewerking> ret = FXCollections.observableArrayList();
        
          for (Integer element : groepsbewerkingen)
-             ret.add(iGroepsBewerking.beschikbareBewerkingen.get(element));
+             ret.add(IGroepsBewerking.beschikbareBewerkingen.get(element));
          
          return ret;
     }
@@ -150,12 +153,12 @@ public class Oefening {
         this.isInGebruik = isInGebruik;
     }
 
-    public void setGroepsbewerking(List<iGroepsBewerking> groepsbewerkingen) {
+    public void setGroepsbewerking(List<IGroepsBewerking> groepsbewerkingen) {
         if (groepsbewerkingen==null)
             return;
         
         this.groepsbewerkingen.clear();
-        for (iGroepsBewerking element : groepsbewerkingen)
+        for (IGroepsBewerking element : groepsbewerkingen)
             this.groepsbewerkingen.add(element.haalID());
     }
     
