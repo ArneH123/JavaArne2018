@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 
 public abstract class IGroepsBewerking {
 
+    private Oefening oefening;
     public static ObservableList<IGroepsBewerking> beschikbareBewerkingen = FXCollections.observableArrayList();
     public static int currectId;
     static {

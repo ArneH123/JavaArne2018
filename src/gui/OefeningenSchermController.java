@@ -43,10 +43,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 import javax.sql.rowset.serial.SerialBlob;
 
 public class OefeningenSchermController extends AnchorPane {
@@ -160,12 +156,9 @@ public class OefeningenSchermController extends AnchorPane {
             antwoordField.setStyle(stijl);
             btnOpenOpgave.setStyle(stijl);
             btnOpenHint.setStyle(stijl);
-            //btnWijzigOpgave.setStyle(stijl);
-            //btnWijzigHint.setStyle(stijl);
             iGBView.setStyle(stijl);
-            //opgaveField.setStyle(stijl);
-            //hintField.setStyle(stijl);
         } 
+        
         btnOpslaan.setStyle(stijl);
         
         boolean aanpasBaar = (status==bewerkStatus.AANPASBAAR || status==bewerkStatus.AANGEPAST);
@@ -181,8 +174,6 @@ public class OefeningenSchermController extends AnchorPane {
 
         btnOpenOpgave.setDisable(opgavePdfBinary==null);
         btnOpenHint.setDisable(hintPdfBinary==null);
-        
-
     }
     
         //laat details van oefening zien

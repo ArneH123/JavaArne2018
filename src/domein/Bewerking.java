@@ -5,14 +5,9 @@
  */
 package domein;
 
-/**
- *
- * @author Arne
- */
 public class Bewerking extends IGroepsBewerking{
     
     private double uitkomst;
-    private Oefening oefening;
     private double getal;
     private String naam;
     private int id;

@@ -6,9 +6,11 @@ import persistentie.PersistentieController;
 public class DomeinController {
 
     private final PersistentieController pc;
+    private Oefening oefening;
 
     public DomeinController() {
         this.pc = new PersistentieController();
+        this.oefening = oefening;
     }
     
     public ObservableList<Oefening> geefOefeningenAsLijst(){
