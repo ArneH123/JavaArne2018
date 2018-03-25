@@ -158,8 +158,8 @@ public class OefeningenSchermController extends AnchorPane {
             antwoordField.setStyle(stijl);
             btnOpenOpgave.setStyle(stijl);
             btnOpenHint.setStyle(stijl);
-            btnWijzigOpgave.setStyle(stijl);
-            btnWijzigHint.setStyle(stijl);
+            //btnWijzigOpgave.setStyle(stijl);
+            //btnWijzigHint.setStyle(stijl);
             iGBView.setStyle(stijl);
             //opgaveField.setStyle(stijl);
             //hintField.setStyle(stijl);
@@ -343,13 +343,16 @@ public class OefeningenSchermController extends AnchorPane {
     @FXML
     private void openOpgave(ActionEvent event)
     {
-        openPDFInDefaultViewer(laatsteSelectie.getOpgave());
+        //openPDFInDefaultViewer(laatsteSelectie.getOpgave());
+        openPDFInDefaultViewer(opgavePdfBinary);
+        
     }
     
     @FXML
     private void openHint(ActionEvent event)
     {
-        openPDFInDefaultViewer(laatsteSelectie.getHint());
+        //openPDFInDefaultViewer(laatsteSelectie.getHint());
+        openPDFInDefaultViewer(hintPdfBinary);
     }
     
     //laad het pdf bestand
@@ -383,7 +386,7 @@ public class OefeningenSchermController extends AnchorPane {
     {
         hintPdfBinary = loadPDF();
         if (hintPdfBinary!=null)
-            zetGewijzigd(btnWijzigHint);
+            zetGewijzigd(btnOpenHint);
     }
     
     @FXML
@@ -391,7 +394,7 @@ public class OefeningenSchermController extends AnchorPane {
     {
         opgavePdfBinary = loadPDF();
         if (opgavePdfBinary!=null)
-            zetGewijzigd(btnWijzigOpgave);
+            zetGewijzigd(btnOpenOpgave);
     }
 
     @FXML
