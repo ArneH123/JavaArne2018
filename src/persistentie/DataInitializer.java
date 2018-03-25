@@ -33,7 +33,9 @@ public class DataInitializer {
     
     
     private static void initializeOefeningen(EntityManager em){
+        /*
         List<Oefening> oefeningen = new ArrayList();
+        
         Oefening o1 = new Oefening("Oefening wortels AB", "2");
         Oefening o2 = new Oefening("Oefening breuken", "4");
         Oefening o3 = new Oefening("Oefening vermenigvuldigen", "16");
@@ -64,5 +66,6 @@ public class DataInitializer {
         for(Oefening o : oefeningen){
             em.persist(o);
         }
+*/
     }
 }

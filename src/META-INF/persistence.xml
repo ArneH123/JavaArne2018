@@ -3,7 +3,6 @@
   <persistence-unit name="P2G11PU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>domein.Oefening</class>
-    <class>domein.IGroepsBewerking</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/bobDatabase"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

@@ -5,6 +5,7 @@
  */
 package gui;
 
+import domein.MaalBewerking;
 import domein.Oefening;
 import domein.OefeningBeheerder;
 import domein.IGroepsBewerking;
