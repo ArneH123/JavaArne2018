@@ -6,6 +6,7 @@
 package persistentie;
 
 import domein.Oefening;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,11 +36,27 @@ public class OefeningMapper implements GenericDao<Oefening>{
         boolean resetAllData = false;
         if (resetAllData)
         {
-            DataInitializer.run(em, true); // enkel runnen om te vullen
             System.out.print("Opgelet ! DataInitializer doet een dataReset op alle gegevens! Gegevens gaan dus verloren. Gelieve buiten debug resetAllData in OefeningMapper op vals te zetten");
+            dataInit();
         }
         
     }
+    public void dataInit()
+        {
+            try
+            {
+                em.getTransaction().begin();
+                
+                    em.createNativeQuery("DELETE FROM ROOT.OEFENING_GROEPSBEWERKINGEN").executeUpdate();
+                    em.createNativeQuery("DELETE FROM ROOT.OEFENING").executeUpdate();
+                    
+                     em.persist(new Oefening("Oefening 1", "10",false));
+                     em.persist(new Oefening("Oefening breuken (in gebruik)", "4",true));
+                     em.persist(new Oefening("Oefening vermenigvuldigen (in gebruik)", "16", true));
+                em.getTransaction().commit();
+            } catch (Exception e) { System.err.println("Databasefout tijdens datainitialisatie. Klopt databasestructuur ?");  }
+    }
+    
     
     public List<Oefening> findAll(){
         return (List<Oefening>)em.createQuery("SELECT o FROM Oefening o ORDER BY o.id ASC", Oefening.class).getResultList();

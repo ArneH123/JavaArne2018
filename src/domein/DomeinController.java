@@ -43,6 +43,10 @@ public class DomeinController {
             return false;
         }
     }
+    public void maakNieuweOefening(){
+        pc.voegOefeningToe(new Oefening("Nieuwe Oefening"));
+    }    
+    
     public boolean voegOefeningToe(Oefening nieuweOefening){
         try
         {

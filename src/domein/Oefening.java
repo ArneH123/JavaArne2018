@@ -45,9 +45,10 @@ public class Oefening {
         this.groepsbewerkingen = copyOef.groepsbewerkingen;
     }
  
-    public Oefening(String naam, String opgave, String antwoord, String feedback) {
+    public Oefening(String naam,  String antwoord, boolean isInGebruik ) {
         this.naam = naam;
         this.antwoord = antwoord;
+        this.isInGebruik = isInGebruik;
     }
  
     public Oefening(String naam) {
@@ -65,12 +66,6 @@ public class Oefening {
         return naam;
     }
     
-    /*
-    public String getOpgave() {
-        return opgave;
-    }
-    */
-
     public String getAntwoord() {
         return antwoord;
     }
@@ -160,10 +155,6 @@ public class Oefening {
         this.groepsbewerkingen.clear();
         for (IGroepsBewerking element : groepsbewerkingen)
             this.groepsbewerkingen.add(element.haalID());
-    }
-    
-    public String toonOverzicht() {
-        return null;
     }
 
     public double getAntwoordd() {

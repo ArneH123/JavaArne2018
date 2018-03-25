@@ -242,16 +242,9 @@ public class OefeningenSchermController extends AnchorPane {
 
     @FXML
     private void nieuweOefening(ActionEvent event) {
-        
-        Oefening test = new Oefening("Nieuwe oefening");
-        
-
-        test.setGroepsbewerking(null);
-                
-        dc.voegOefeningToe(test);
+        dc.maakNieuweOefening();
         laadOefeningenLijst();
         oefeningenView.getSelectionModel().selectLast();
-
     }
 
     @FXML
