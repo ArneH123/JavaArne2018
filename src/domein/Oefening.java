@@ -75,11 +75,8 @@ public class Oefening {
 
     public List<IGroepsBewerking> getGroepsbewerking() {
        ObservableList<IGroepsBewerking> ret = FXCollections.observableArrayList();
-       
-         for (IGroepsBewerking element : groepsbewerkingen)
-             ret.add(IGroepsBewerking.beschikbareBewerkingen.get(element));
          
-         return ret;
+         return this.groepsbewerkingen;
     }
     
     public void setNaam(String naam) {
@@ -148,12 +145,8 @@ public class Oefening {
     }
 
     public void setGroepsbewerking(List<IGroepsBewerking> groepsbewerkingen) {
-        if (groepsbewerkingen==null)
-            return;
         
-        this.groepsbewerkingen.clear();
-        for (IGroepsBewerking element : groepsbewerkingen)
-            this.groepsbewerkingen.add(element.haalID());
+        this.groepsbewerkingen = groepsbewerkingen;
     }
 
     public double getAntwoordd() {

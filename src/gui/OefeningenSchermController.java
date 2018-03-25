@@ -139,6 +139,7 @@ public class OefeningenSchermController extends AnchorPane {
         updateEditeerModus(status,true);
     }
     
+    //past de kleuren aan van de vakken
     private void updateEditeerModus(bewerkStatus status, boolean updateAlleStijlen)
     {
         // later aan te vullen door achtergroundkleur ? (of toch gewoon setDisable gebruiken (lelkijk))
@@ -277,7 +278,7 @@ public class OefeningenSchermController extends AnchorPane {
         laadOefeningenLijst();
      }
 
-    
+    //leest de bestanden
     public static byte[] readFully(InputStream stream) throws IOException
     {
         byte[] buffer = new byte[8192];
@@ -291,6 +292,7 @@ public class OefeningenSchermController extends AnchorPane {
         return baos.toByteArray();
     }
         
+    //laad de bestanden
     public static byte[] loadFile(File sourcePath) throws IOException
     {
         InputStream inputStream = null;
@@ -308,6 +310,7 @@ public class OefeningenSchermController extends AnchorPane {
         }
     }
 
+    //laat de pdf verschijnen in een apart scherm
     private void openPDFInDefaultViewer(Blob pdf)
     {
         if (pdf==null)
@@ -348,6 +351,7 @@ public class OefeningenSchermController extends AnchorPane {
         openPDFInDefaultViewer(laatsteSelectie.getHint());
     }
     
+    //laad het pdf bestand
     private Blob loadPDF()
     {
          FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF Files (*.txt)", "*.pdf");
@@ -489,33 +493,33 @@ public class OefeningenSchermController extends AnchorPane {
                         zetGewijzigd(iGBView);
             }
         });
+        
         //implementeert van listener, is de filter functie voor oefeningen
         txtLijstZoek.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             oefeningenLijst.setPredicate( data -> {
                 return data.getNaam().toLowerCase().contains(newValue.toLowerCase());
                 });
         });
-        
        
         //roept oefeningDetailsGewijzigd aan om wijzigingen op te slaan
         naamField.textProperty().addListener(new OefeningDetailsGewijzigd(naamField));
-        //opgaveField.textProperty().addListener(new OefeningDetailsGewijzigd(opgaveField));
         antwoordField.textProperty().addListener(new OefeningDetailsGewijzigd(antwoordField));
-        //hintField.textProperty().addListener(new OefeningDetailsGewijzigd(hintField));
         
         laadGroepsBewerkingen();
                 
         laadOefeningenLijst();
         laadOefeningDetail(); // Trigger de geen selectie procedure
     }
+    
     private void zetGewijzigd(Control element)
     {
-            String stijl = "-fx-border-color: #"+kleuren.get(bewerkStatus.AANGEPAST) +";"; 
-            element.setStyle(stijl);
-            updateEditeerModus(bewerkStatus.AANGEPAST,false);
+        String stijl = "-fx-border-color: #"+kleuren.get(bewerkStatus.AANGEPAST) +";"; 
+        element.setStyle(stijl);
+        updateEditeerModus(bewerkStatus.AANGEPAST,false);
     }
+    
     public class OefeningDetailsGewijzigd implements ChangeListener
-   {
+    {
         private Control source;
         public OefeningDetailsGewijzigd(Control source) {
             this.source = source;
