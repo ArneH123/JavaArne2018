@@ -7,10 +7,6 @@ package persistentie;
 
 import java.util.List;
 
-/**
- *
- * @author Arne
- */
 public interface GenericDao<T> {
 
     List<T> findAll();

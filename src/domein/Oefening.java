@@ -23,18 +23,16 @@ public class Oefening {
     private int id;
     private String naam;
     private String antwoord;
-    private double antwoordd;
+    private double antwoordDouble;
     private boolean isInGebruik = false;
 
     private byte[] opgavePDFBlob;
     private byte[] hintPDFBlob;
     
-
-
     @ElementCollection 
     private List<Integer> groepsbewerkingen = FXCollections.observableArrayList();
 
-    // Copy constructir
+    // Copy constructor
     public Oefening(Oefening copyOef) {
         //copyOef
         this.naam = copyOef.naam;
@@ -73,6 +71,10 @@ public class Oefening {
     public boolean getIsInGebruik() {
         return isInGebruik;
     }
+    
+    public double getAntwoordd() {
+        return antwoordDouble;
+    }
 
     public List<IGroepsBewerking> getGroepsbewerking() {
        ObservableList<IGroepsBewerking> ret = FXCollections.observableArrayList();
@@ -81,6 +83,32 @@ public class Oefening {
              ret.add(IGroepsBewerking.beschikbareBewerkingen.get(element));
          
          return ret;
+    }
+    
+    public Blob getOpgave() {
+        try {
+            if (this.opgavePDFBlob==null)
+                return null;
+            
+            Blob opgavePdfBinary = new SerialBlob(this.opgavePDFBlob);
+            return opgavePdfBinary;
+        } catch (SQLException ex) {
+            Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public Blob getHint() {
+        try {
+            if (this.hintPDFBlob==null)
+                return null;
+            
+            Blob hintPdfBinary = new SerialBlob(this.hintPDFBlob);
+            return hintPdfBinary;
+        } catch (SQLException ex) {
+            Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
     public void setNaam(String naam) {
@@ -116,33 +144,6 @@ public class Oefening {
             Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    public Blob getOpgave() {
-        try {
-            if (this.opgavePDFBlob==null)
-                return null;
-            
-            Blob opgavePdfBinary = new SerialBlob(this.opgavePDFBlob);
-            return opgavePdfBinary;
-        } catch (SQLException ex) {
-            Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-    
-    public Blob getHint() {
-        try {
-            if (this.hintPDFBlob==null)
-                return null;
-            
-            Blob hintPdfBinary = new SerialBlob(this.hintPDFBlob);
-            return hintPdfBinary;
-        } catch (SQLException ex) {
-            Logger.getLogger(Oefening.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
 
     public void setIsInGebruik(boolean isInGebruik) {
         this.isInGebruik = isInGebruik;
@@ -155,9 +156,5 @@ public class Oefening {
         this.groepsbewerkingen.clear();
         for (IGroepsBewerking element : groepsbewerkingen)
             this.groepsbewerkingen.add(element.haalID());
-    }
-
-    public double getAntwoordd() {
-        return antwoordd;
     }
 }

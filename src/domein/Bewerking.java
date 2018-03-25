@@ -9,7 +9,7 @@ package domein;
  *
  * @author Arne
  */
-public class MaalBewerking extends IGroepsBewerking{
+public class Bewerking extends IGroepsBewerking{
     
     private double uitkomst;
     private Oefening oefening;
@@ -17,7 +17,7 @@ public class MaalBewerking extends IGroepsBewerking{
     private String naam;
     private int id;
     
-    public MaalBewerking(String oefening, double getal) {
+    public Bewerking(String oefening, double getal) {
         id = IGroepsBewerking.currectId;
         IGroepsBewerking.currectId++;
 
@@ -26,19 +26,16 @@ public class MaalBewerking extends IGroepsBewerking{
         //this.uitkomst = oefening.getAntwoordd()*getal;
     }
      
-    //@Override
-    //public String geefID()
-    //{
-    //return this.naam; }
     @Override
-    public int haalID()
-    {
-    return this.id; }
+    public int haalID() {
+        return this.id; 
+    }
     
     @Override
-    public String geefNaam()
-    {
-    return this.naam; }
+    public String geefNaam() {
+        return this.naam; 
+    }
+    
     @Override
     public String geefBewerkingToString() {
         return String.format("Doe je uitkomst maal %d", getal);
@@ -50,6 +47,5 @@ public class MaalBewerking extends IGroepsBewerking{
             return true;
         }
         return false;
-    }
-    
+    }   
 }

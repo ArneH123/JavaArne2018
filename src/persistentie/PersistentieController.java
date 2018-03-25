@@ -1,15 +1,14 @@
 package persistentie;
 
 import domein.Oefening;
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class PersistentieController {
-    private OefeningMapper oefeningMapper;
+    private GenericDaoJPA oefeningMapper;
 
     public PersistentieController() {
-        oefeningMapper = new OefeningMapper();
+        oefeningMapper = new GenericDaoJPA();
     }
 
     public ObservableList<Oefening> geefOefeningenAsLijst() {

@@ -6,7 +6,6 @@
 package gui;
 
 import domein.DomeinController;
-import domein.MaalBewerking;
 import domein.Oefening;
 import domein.IGroepsBewerking;
 import java.awt.Desktop;
@@ -44,6 +43,10 @@ import java.nio.file.Paths;
 import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javax.sql.rowset.serial.SerialBlob;
 
 public class OefeningenSchermController extends AnchorPane {
@@ -120,19 +123,18 @@ public class OefeningenSchermController extends AnchorPane {
 
     private static Map<bewerkStatus, String> kleuren = new HashMap<bewerkStatus, String>()
     {{
-                    //put(bewerkStatus.AANPASBAAR,"006400");
-                    put(bewerkStatus.AANPASBAAR,"008200");
-                    put(bewerkStatus.AANGEPAST,"FFA500");
-                    put(bewerkStatus.NIETAANPASBAAR,"A52A2A");
-                    put(bewerkStatus.GEENSELECTIE,"999999");
+        put(bewerkStatus.AANPASBAAR,"008200");
+        put(bewerkStatus.AANGEPAST,"FFA500");
+        put(bewerkStatus.NIETAANPASBAAR,"A52A2A");
+        put(bewerkStatus.GEENSELECTIE,"999999");
     }};
 
     private static Map<bewerkStatus, String> uitleg = new HashMap<bewerkStatus, String>()
     {{
-                    put(bewerkStatus.AANPASBAAR,"Deze oefening is aanpasbaar. Pas de velden aan en druk op opslaan om te wijzigingen te bewaren.");
-                    put(bewerkStatus.AANGEPAST,"U ben bezig met aanpassen van de oefeningen. Uw wijzigingen zijn nog niet opgeslaan !");
-                    put(bewerkStatus.NIETAANPASBAAR,"U kan deze oefening niet wijzigen! \n Deze oefening is gekoppeld aan een BoB die in een openstaande of actieve sessie zit.");
-                    put(bewerkStatus.GEENSELECTIE,"(geen oefening geselecteerd)");
+        put(bewerkStatus.AANPASBAAR,"Deze oefening is aanpasbaar. Pas de velden aan en druk op opslaan om te wijzigingen te bewaren.");
+        put(bewerkStatus.AANGEPAST,"U ben bezig met aanpassen van de oefeningen. Uw wijzigingen zijn nog niet opgeslaan !");
+        put(bewerkStatus.NIETAANPASBAAR,"U kan deze oefening niet wijzigen! \n Deze oefening is gekoppeld aan een BoB die in een openstaande of actieve sessie zit.");
+        put(bewerkStatus.GEENSELECTIE,"(geen oefening geselecteerd)");
     }};
 
     private void updateEditeerModus(bewerkStatus status)
@@ -144,8 +146,8 @@ public class OefeningenSchermController extends AnchorPane {
     private void updateEditeerModus(bewerkStatus status, boolean updateAlleStijlen)
     {
         // later aan te vullen door achtergroundkleur ? (of toch gewoon setDisable gebruiken (lelkijk))
-        // Background achter = new Background(new BackgroundFill(Color.GREY, new CornerRadii(10), null));
-        // naamField.setBackground(achter);
+//         Background achter = new Background(new BackgroundFill(Color.GREY, new CornerRadii(10), null));
+//         naamField.setBackground(achter);
         
         // Direct gebruik van hasmap > als een status ontbreekt in de hashmap gaat er een fout komen > moeten we dit opvangen met een defualt ??        
         String stijl = "-fx-border-color: #"+kleuren.get(status) +";"; 

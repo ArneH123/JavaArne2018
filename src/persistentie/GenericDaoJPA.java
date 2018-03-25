@@ -6,23 +6,19 @@
 package persistentie;
 
 import domein.Oefening;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- *
- * @author Arne
- */
-public class OefeningMapper implements GenericDao<Oefening>{
+
+public class GenericDaoJPA implements GenericDao<Oefening>{
 
     private EntityManagerFactory emfactory;
     private EntityManager em;
     private final String EntityName = "P2G11PU";
 
-    public OefeningMapper() {
+    public GenericDaoJPA() {
         try
         {
             emfactory = Persistence.createEntityManagerFactory(EntityName);
@@ -47,17 +43,20 @@ public class OefeningMapper implements GenericDao<Oefening>{
             {
                 em.getTransaction().begin();
                 
-                    em.createNativeQuery("DELETE FROM ROOT.OEFENING_GROEPSBEWERKINGEN").executeUpdate();
-                    em.createNativeQuery("DELETE FROM ROOT.OEFENING").executeUpdate();
+                em.createNativeQuery("DELETE FROM ROOT.OEFENING_GROEPSBEWERKINGEN").executeUpdate();
+                em.createNativeQuery("DELETE FROM ROOT.OEFENING").executeUpdate();
                     
-                     em.persist(new Oefening("Oefening 1", "10",false));
-                     em.persist(new Oefening("Oefening breuken (in gebruik)", "4",true));
-                     em.persist(new Oefening("Oefening vermenigvuldigen (in gebruik)", "16", true));
+                em.persist(new Oefening("Wiskunde - Domino", "10",false));
+                em.persist(new Oefening("XXX - Wiskunde - Breuken", "4",true));
+                em.persist(new Oefening("XXX - Wiskunde Vermenigvuldigen", "16", true));
                 em.getTransaction().commit();
-            } catch (Exception e) { System.err.println("Databasefout tijdens datainitialisatie. Klopt databasestructuur ?");  }
+            } catch (Exception e) { 
+                System.err.println("Databasefout tijdens datainitialisatie. Klopt databasestructuur ?");  
+            }
     }
     
     
+    @Override
     public List<Oefening> findAll(){
         return (List<Oefening>)em.createQuery("SELECT o FROM Oefening o ORDER BY o.id ASC", Oefening.class).getResultList();
     }

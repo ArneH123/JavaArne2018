@@ -1,6 +1,5 @@
 package domein;
 
-import java.util.List;
 import javafx.collections.ObservableList;
 import persistentie.PersistentieController;
 
@@ -43,6 +42,7 @@ public class DomeinController {
             return false;
         }
     }
+    
     public void maakNieuweOefening(){
         pc.voegOefeningToe(new Oefening("Nieuwe Oefening"));
     }    
